@@ -1,0 +1,1 @@
+ALTER TABLE "facturations" ADD COLUMN "sync" boolean DEFAULT false;
