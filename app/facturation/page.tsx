@@ -577,7 +577,7 @@ const calculateItemTax = (item: InvoiceItem) => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="font-medium">
-                      ${invoice.totalAmount}
+                      {invoice.totalAmount}
                     </span>
                     <Button
                       variant="ghost"
@@ -599,7 +599,7 @@ const calculateItemTax = (item: InvoiceItem) => {
   <RefreshCw className={`h-4 w-4 ${isUpdating === invoice.id ? 'animate-spin' : ''}`} />
 </Button>
                     )}
-                    <Button
+                    {!invoice.sync && <Button
                       variant="ghost"
                       size="sm"
                       className="text-red-600 hover:text-red-700"
@@ -611,7 +611,7 @@ const calculateItemTax = (item: InvoiceItem) => {
                       title="Delete Invoice"
                     >
                       <Trash2 className="h-4 w-4" />
-                    </Button>
+                    </Button>}
                   </div>
                 </div>
 
@@ -655,9 +655,9 @@ const calculateItemTax = (item: InvoiceItem) => {
                               <tr key={item.id} className="border-t">
                                 <td className="px-4 py-2">{item.description}</td>
                                 <td className="px-4 py-2 text-right">{item.quantity}</td>
-                                <td className="px-4 py-2 text-right">${item.unitPrice}</td>
+                                <td className="px-4 py-2 text-right">{item.unitPrice}</td>
                                 <td className="px-4 py-2 text-right">
-                                  ${(item.total !== undefined ? item.total : (item.quantity * item.unitPrice))}
+                                  {(item.total !== undefined ? item.total : (item.quantity * item.unitPrice))}
                                 </td>
                               </tr>
                             ))
@@ -673,16 +673,16 @@ const calculateItemTax = (item: InvoiceItem) => {
                           <tr className="border-t">
                             <td colSpan={3} className="px-4 py-2 text-right font-medium">Subtotal:</td>
                             <td className="px-4 py-2 text-right font-medium">
-                              ${(invoice.totalAmount - invoice.taxAmount)}
+                              {(invoice.totalAmount - invoice.taxAmount)}
                             </td>
                           </tr>
                           <tr>
                             <td colSpan={3} className="px-4 py-2 text-right font-medium">Tax:</td>
-                            <td className="px-4 py-2 text-right">${invoice.taxAmount}</td>
+                            <td className="px-4 py-2 text-right">{invoice.taxAmount}</td>
                           </tr>
                           <tr className="border-t">
                             <td colSpan={3} className="px-4 py-2 text-right font-medium">Total:</td>
-                            <td className="px-4 py-2 text-right font-bold">${invoice.totalAmount}</td>
+                            <td className="px-4 py-2 text-right font-bold">{invoice.totalAmount}</td>
                           </tr>
                         </tfoot>
                       </table>
