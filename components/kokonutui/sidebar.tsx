@@ -115,7 +115,7 @@ export default function Sidebar() {
                   <NavItem href="/dashboard" icon={Home}>
                     Dashboard
                   </NavItem>
-                  <NavItem href="/analytics" icon={BarChart2}>
+                  {/* <NavItem href="/analytics" icon={BarChart2}>
                     Analytics
                   </NavItem>
                   <NavItem href="/organization" icon={Building2}>
@@ -123,7 +123,7 @@ export default function Sidebar() {
                   </NavItem>
                   <NavItem href="/projects" icon={Folder}>
                     Projects
-                  </NavItem>
+                  </NavItem> */}
                 </div>
               </div>
 
@@ -132,8 +132,8 @@ export default function Sidebar() {
                   Finance
                 </div>
                 <div className="space-y-1">
-                  <NavItem href="/transactions" icon={Wallet}>
-                    Transactions
+                  <NavItem href="/clients" icon={User}>
+                    Clients
                   </NavItem>
                   <NavItem href="/facturation" icon={FileText}>
                     Facturation
@@ -147,7 +147,7 @@ export default function Sidebar() {
                 </div>
               </div>
 
-              <div>
+              {/* <div>
                 <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
                   Team
                 </div>
@@ -168,7 +168,7 @@ export default function Sidebar() {
                     Meetings
                   </NavItem>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
