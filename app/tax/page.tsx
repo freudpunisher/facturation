@@ -1,248 +1,413 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { DataTable } from "@/components/data-table/data-table"
-import { type Tax, taxColumns } from "@/components/data-table/columns"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Eye } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus } from "lucide-react"
-import Layout from "@/components/kokonutui/layout"
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Layout from "@/components/kokonutui/layout";
 
-// Sample data
-const taxes: Tax[] = [
-  {
-    id: "1",
-    name: "Standard VAT",
-    rate: 20,
-    type: "VAT",
-    applicable: "All Products",
-    status: "active",
-  },
-  {
-    id: "2",
-    name: "Reduced VAT",
-    rate: 5,
-    type: "VAT",
-    applicable: "Essential Goods",
-    status: "active",
-  },
-  {
-    id: "3",
-    name: "Sales Tax",
-    rate: 8.5,
-    type: "Sales Tax",
-    applicable: "Retail Products",
-    status: "active",
-  },
-  {
-    id: "4",
-    name: "Income Tax",
-    rate: 25,
-    type: "Income Tax",
-    applicable: "Services",
-    status: "inactive",
-  },
-  {
-    id: "5",
-    name: "Export Tax",
-    rate: 0,
-    type: "VAT",
-    applicable: "Exports",
-    status: "active",
-  },
-]
+type Tax = {
+  id: number;
+  invoice: {
+    id: number;
+    invoiceNumber: string;
+    createdAt: string;
+  };
+  invoice_registered_date: string;
+  authorityReference: string | null;
+  createdAt: string;
+};
 
 export default function TaxPage() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isAlertOpen, setIsAlertOpen] = useState(false)
-  const [selectedTax, setSelectedTax] = useState<string | null>(null)
+  const [taxes, setTaxes] = useState<Tax[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 10;
+  
+  // Filters
+  const [dateFilter, setDateFilter] = useState("");
+  const [referenceFilter, setReferenceFilter] = useState("");
+  const [invoiceIdFilter, setInvoiceIdFilter] = useState("");
+  
+  useEffect(() => {
+    fetchTaxes();
+  }, [currentPage, dateFilter, referenceFilter, invoiceIdFilter]);
+  
+  const fetchTaxes = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/taxes");
+      
+      if (!response.ok) {
+        throw new Error("Failed to fetch taxes");
+      }
+      
+      const data = await response.json();
+      
+      // Apply filters
+      let filteredData = data;
+      
+      if (dateFilter) {
+        filteredData = filteredData.filter((tax: Tax) => 
+          tax.invoice_registered_date.includes(dateFilter)
+        );
+      }
+      
+      if (referenceFilter) {
+        filteredData = filteredData.filter((tax: Tax) => 
+          tax.authorityReference?.toLowerCase().includes(referenceFilter.toLowerCase())
+        );
+      }
+      
+      if (invoiceIdFilter) {
+        filteredData = filteredData.filter((tax: Tax) => 
+          tax.invoice.invoiceNumber.toString().includes(invoiceIdFilter)
+        );
+      }
+      
+      // Calculate pagination
+      setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+      
+      // Slice the data for the current page
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedData = filteredData.slice(startIndex, endIndex);
+      
+      setTaxes(paginatedData);
+      setLoading(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
+      setLoading(false);
+    }
+  };
 
-  const [formData, setFormData] = useState({
-    name: "",
-    rate: "",
-    type: "VAT",
-    applicable: "",
-    status: "active",
-  })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  const onView = async (invoice: Tax) => {
+    try {
+      // Extract invoice sequence from invoice number
+      const [invoiceSequence] = invoice.invoice.invoiceNumber.split('/');
+      const formatEBMSDate = (dateString: string) => {
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        const d = new Date(dateString);
+        
+        // Get UTC time parts
+        const year = d.getUTCFullYear();
+        const month = pad(d.getUTCMonth() + 1); // Months are 0-based in JS
+        const day = pad(d.getUTCDate());
+        const hours = pad(d.getUTCHours());
+        const minutes = pad(d.getUTCMinutes());
+        const seconds = pad(d.getUTCSeconds());
+      
+        return `${year}${month}${day}${hours}${minutes}${seconds}`;
+      };
+      
+      // Create the invoice identifier with proper formatting
+      const invoice_identifier = [
+        process.env.NEXT_PUBLIC_EBMS_NIF,
+        process.env.NEXT_PUBLIC_EBMS_USERNAME,
+        formatEBMSDate(invoice.invoice.createdAt),
+        invoiceSequence.padStart(5, '0') // Ensure 5-digit sequence
+      ].join('/');
+      
+      // Authenticate with the EBMS API
+      const authResponse = await fetch(`${process.env.NEXT_PUBLIC_EBMS_API_URL}/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: process.env.NEXT_PUBLIC_EBMS_USERNAME,
+          password: process.env.NEXT_PUBLIC_EBMS_PASSWORD
+        })
+      });
+      
+      // Handle authentication errors
+      if (!authResponse.ok) {
+        const errorData = await authResponse.json();
+        throw new Error(`Authentication failed: ${errorData.message || 'Unknown error'}`);
+      }
+      
+      // Extract token from authentication response
+      const authData = await authResponse.json();
+      const token = authData.result.token;
+      
+      // Submit the invoice identifier to EBMS API
+      const submitResponse = await fetch(`${process.env.NEXT_PUBLIC_EBMS_API_URL}/getInvoice/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          invoice_identifier: invoice_identifier
+        })
+      });
+      
+      // Handle submission response
+      if (!submitResponse.ok) {
+        const errorData = await submitResponse.json();
+        throw new Error(`Invoice submission failed: ${errorData.message || 'Unknown error'}`);
+      }
+      
+      const result = await submitResponse.json();
+      console.log(result, 'result');
+      
+      // Store the invoice data in localStorage (or you could use a state management solution)
+      localStorage.setItem('ebmsInvoiceData', JSON.stringify(result));
+      
+      // Navigate to the invoice detail page
+      window.location.href = `/tax/invoice/${invoice.id}`;
+      
+    } catch (error) {
+      console.error("Error in onView function:", error);
+      alert(`Error fetching invoice: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission logic here
-    console.log("Form submitted:", formData)
-    setIsOpen(false)
-    // Reset form
-    setFormData({
-      name: "",
-      rate: "",
-      type: "VAT",
-      applicable: "",
-      status: "active",
-    })
-  }
-
-  const handleDelete = (taxId: string) => {
-    setSelectedTax(taxId)
-    setIsAlertOpen(true)
-  }
-
-  const confirmDelete = () => {
-    console.log("Deleting tax:", selectedTax)
-    setIsAlertOpen(false)
-    setSelectedTax(null)
-  }
-
+  
+  const clearFilters = () => {
+    setDateFilter("");
+    setReferenceFilter("");
+    setInvoiceIdFilter("");
+    setCurrentPage(1);
+  };
+  
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString();
+    } catch (e) {
+      return dateString;
+    }
+  };
+  
+  // Generate pagination links
+  const generatePaginationLinks = () => {
+    const links = [];
+    
+    // Previous button
+    links.push(
+      <PaginationItem key="prev">
+        <PaginationPrevious 
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+        />
+      </PaginationItem>
+    );
+    
+    // First page
+    links.push(
+      <PaginationItem key="1">
+        <PaginationLink 
+          onClick={() => setCurrentPage(1)}
+          isActive={currentPage === 1}
+        >
+          1
+        </PaginationLink>
+      </PaginationItem>
+    );
+    
+    // Ellipsis if needed
+    if (currentPage > 3) {
+      links.push(
+        <PaginationItem key="ellipsis1">
+          <PaginationEllipsis />
+        </PaginationItem>
+      );
+    }
+    
+    // Pages around current
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+      if (i <= 1 || i >= totalPages) continue;
+      links.push(
+        <PaginationItem key={i}>
+          <PaginationLink 
+            onClick={() => setCurrentPage(i)}
+            isActive={currentPage === i}
+          >
+            {i}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+    
+    // Ellipsis if needed
+    if (currentPage < totalPages - 2) {
+      links.push(
+        <PaginationItem key="ellipsis2">
+          <PaginationEllipsis />
+        </PaginationItem>
+      );
+    }
+    
+    // Last page
+    if (totalPages > 1) {
+      links.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink 
+            onClick={() => setCurrentPage(totalPages)}
+            isActive={currentPage === totalPages}
+          >
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+    
+    // Next button
+    links.push(
+      <PaginationItem key="next">
+        <PaginationNext 
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+        />
+      </PaginationItem>
+    );
+    
+    return links;
+  };
+  
   return (
     <Layout>
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Tax Management</h1>
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Tax
+
+    <div className="container mx-auto py-8">
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Taxes Management</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div>
+              <label className="text-sm font-medium mb-1 block">Invoice ID</label>
+              <Input
+                type="text"
+                placeholder="Filter by Invoice ID"
+                value={invoiceIdFilter}
+                onChange={(e) => setInvoiceIdFilter(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">Date</label>
+              <Input
+                type="text"
+                placeholder="Filter by Date"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">Authority Reference</label>
+              <Input
+                type="text"
+                placeholder="Filter by Reference"
+                value={referenceFilter}
+                onChange={(e) => setReferenceFilter(e.target.value)}
+              />
+            </div>
+            <div className="flex items-end">
+              <Button 
+                variant="outline" 
+                onClick={clearFilters}
+                className="w-full"
+              >
+                Clear Filters
               </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <form onSubmit={handleSubmit}>
-                <DialogHeader>
-                  <DialogTitle>Add New Tax</DialogTitle>
-                  <DialogDescription>Fill in the details to add a new tax to your system.</DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Name
-                    </Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="col-span-3"
-                      required
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="rate" className="text-right">
-                      Rate (%)
-                    </Label>
-                    <Input
-                      id="rate"
-                      name="rate"
-                      type="number"
-                      step="0.01"
-                      value={formData.rate}
-                      onChange={handleInputChange}
-                      className="col-span-3"
-                      required
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="type" className="text-right">
-                      Type
-                    </Label>
-                    <Select value={formData.type} onValueChange={(value: string) => handleSelectChange("type", value)}>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="VAT">VAT</SelectItem>
-                        <SelectItem value="Sales Tax">Sales Tax</SelectItem>
-                        <SelectItem value="Income Tax">Income Tax</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="applicable" className="text-right">
-                      Applicable To
-                    </Label>
-                    <Input
-                      id="applicable"
-                      name="applicable"
-                      value={formData.applicable}
-                      onChange={handleInputChange}
-                      className="col-span-3"
-                      required
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="status" className="text-right">
-                      Status
-                    </Label>
-                    <Select value={formData.status} onValueChange={(value: string) => handleSelectChange("status", value)}>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+            </div>
+          </div>
+          
+          {loading ? (
+            <div className="flex justify-center p-8">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+            </div>
+          ) : error ? (
+            <div className="text-red-500 p-4 text-center">{error}</div>
+          ) : (
+            <>
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>ID</TableHead>
+                      <TableHead>Invoice ID</TableHead>
+                      <TableHead>Registration Date</TableHead>
+                      <TableHead>Authority Reference</TableHead>
+                      <TableHead>Created At</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {taxes.length > 0 ? (
+                      taxes.map((tax) => (
+                        <TableRow key={tax.id}>
+                          <TableCell>{tax.id}</TableCell>
+                          <TableCell>{tax.invoice.invoiceNumber}</TableCell>
+                          <TableCell>{tax.invoice_registered_date}</TableCell>
+                          <TableCell>{tax.authorityReference || "-"}</TableCell>
+                          <TableCell>{formatDate(tax.createdAt)}</TableCell>
+                          <TableCell className="text-right">
+                            
+                              <Button variant="outline" size="sm" onClick={() => onView(tax)}>
+                                <Eye className="h-4 w-4 mr-1" />
+                                View
+                              </Button>
+                            
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center py-8">
+                          No taxes found
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+              
+              {taxes.length > 0 && (
+                <div className="mt-4">
+                  <Pagination>
+                    <PaginationContent>
+                      {generatePaginationLinks()}
+                    </PaginationContent>
+                  </Pagination>
                 </div>
-                <DialogFooter>
-                  <Button type="submit">Save Tax</Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
-        <div className="bg-white dark:bg-[#0F0F12] rounded-xl p-6 border border-gray-200 dark:border-[#1F1F23]">
-          <DataTable columns={taxColumns} data={taxes} searchColumn="name" searchPlaceholder="Search taxes..." />
-        </div>
-      </div>
-
-      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the tax and may affect existing invoices and
-              products.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+              )}
+            </>
+          )}
+        </CardContent>
+      </Card>
+    </div>
     </Layout>
-  )
+  );
 }
-

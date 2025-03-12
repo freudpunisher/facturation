@@ -1,12 +1,25 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { taxes } from "@/db/schema";
+import { taxes, facturations } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 // GET /api/taxes - Fetch all taxes
 export async function GET() {
   try {
-    const allTaxes = await db.select().from(taxes);
+    const allTaxes = await db.select({
+
+
+        id: taxes.id,
+        invoice: {
+            id:facturations.id,
+            invoiceNumber: facturations.invoiceNumber,
+            createdAt: facturations.createdAt, 
+        },
+        invoice_registered_date: taxes.invoice_registered_date,
+        authorityReference: taxes.authorityReference,
+        createdAt: taxes.createdAt, 
+    }).from(taxes)
+    .innerJoin(facturations, eq(taxes.invoiceId, facturations.id));
     return NextResponse.json(allTaxes);
   } catch (error) {
     return NextResponse.json(
@@ -34,12 +47,12 @@ export async function POST(request: Request) {
       let parsedDate: Date;
       try {
         // Try parsing the date as an ISO string (e.g., "2023-10-01T00:00:00.000Z")
-        parsedDate = new Date(invoice_registered_date);
+        // parsedDate = new Date(invoice_registered_date);
   
         // Check if the date is valid
-        if (isNaN(invoice_registered_date.getTime())) {
-          throw new Error("Invalid date format");
-        }
+        // if (isNaN(invoice_registered_date.getTime())) {
+        //   throw new Error("Invalid date format");
+        // }
       } catch (error) {
         return NextResponse.json(
           { error: "Invalid date format for invoice_registered_date. Please provide a valid date." },
@@ -76,17 +89,11 @@ export async function PUT(
     const body = await request.json();
     const { invoice_registered_date, authorityReference } = body;
 
-    if (!invoice_registered_date) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
 
     const updatedTax = await db
       .update(taxes)
       .set({
-        invoice_registered_date: new Date(invoice_registered_date),
+        invoice_registered_date,
         authorityReference: authorityReference || null,
       })
       .where(eq(taxes.id, id))

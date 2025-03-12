@@ -1,0 +1,1 @@
+ALTER TABLE "taxes" ALTER COLUMN "invoice_registered_date" SET DATA TYPE varchar(255);

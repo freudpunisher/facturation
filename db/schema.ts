@@ -45,7 +45,7 @@ export const detailFacturations = pgTable('detail_facturations', {
 export const taxes = pgTable('taxes', {
   id: serial('id').primaryKey(),
   invoiceId: integer('invoice_id').references(() => facturations.id).notNull(),
-  invoice_registered_date: timestamp('invoice_registered_date').notNull(),
+  invoice_registered_date:  varchar('invoice_registered_date', { length: 255 }).notNull(),
   authorityReference: varchar('authority_reference', { length: 255 }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });

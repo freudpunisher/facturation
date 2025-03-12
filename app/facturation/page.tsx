@@ -82,6 +82,7 @@ export default function FacturationPage() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [syncFilter, setSyncFilter] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [syncingInvoice, setSyncingInvoice] = useState<Invoice | null>(null);
   const [sortBy, setSortBy] = useState<string>("date-desc");
 const {toast} = useToast();
   // Fetch invoices
@@ -103,6 +104,17 @@ const {toast} = useToast();
   useEffect(() => {
     fetchInvoices();
   }, []);
+
+  // useEffect(() => {
+  //   if (syncingInvoice && invoiceItems[syncingInvoice.id]) {
+  //     // Items are now available, proceed with transformation
+  //     const ebmsInvoice = transformToEBMSFormat(syncingInvoice);
+  //     console.log("EBMS Invoice Data:", ebmsInvoice);
+  
+  //     // Proceed with EBMS API submission here
+  //     // submitToEBMS(ebmsInvoice); // You'll need to implement this
+  //   }
+  // }, [invoiceItems, syncingInvoice]);
 
   // Apply filters
   useEffect(() => {
@@ -161,7 +173,7 @@ const {toast} = useToast();
       if (!response.ok) throw new Error("Failed to fetch items");
       const items = await response.json();
       setInvoiceItems(prev => ({ ...prev, [invoiceId]: items }));
-      console.log(items,"test ")
+     return items;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load items");
     }
@@ -219,11 +231,12 @@ const {toast} = useToast();
     try {
       // 1. Get the invoice data
       const invoice = invoices.find(inv => inv.id === invoiceId);
+      let items = []
       if (!invoice) throw new Error("Invoice not found");
-  
+      setSyncingInvoice(invoice); 
       // 2. Get invoice items if not already loaded
       if (!invoiceItems[invoiceId]) {
-        await fetchInvoiceItems(invoiceId);
+        items = await fetchInvoiceItems(invoiceId);
       }
   
       // 3. Authenticate with EBMS API to get token
@@ -247,7 +260,7 @@ const {toast} = useToast();
       console.log(result.token,'tokennnnnn')
   
       // 4. Transform data to EBMS format
-      const ebmsInvoice = transformToEBMSFormat(invoice);
+      const ebmsInvoice = transformToEBMSFormat(invoice, items);
   
       // 5. Submit to EBMS API with the token
       const submitResponse = await fetch(`${process.env.NEXT_PUBLIC_EBMS_API_URL}/addInvoice_confirm/`, {
@@ -322,10 +335,10 @@ const {toast} = useToast();
 };
 
 // Add the transform function
-const transformToEBMSFormat = (invoice: Invoice) => {
+const transformToEBMSFormat = (invoice: Invoice, items: InvoiceItem[]) => {
   // Ensure we have the invoice items
-  const items = invoiceItems[invoice.id] || [];
-  console.log("Invoice Items for Transformation:", invoiceItems[invoice.id]); // Log the items
+  // const items = invoiceItems[invoice.id] || [];
+  console.log("Invoice Items for Transformation:", items); // Log the items
 
   // Format date to YYYYMMDDHHMMSS
   const formatEBMSDate = (dateString: string) => {
