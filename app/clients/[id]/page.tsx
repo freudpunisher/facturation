@@ -649,7 +649,7 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
                   <span className="font-medium">Outstanding amount:</span>{" "}
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
-                    currency: "USD",
+                    currency: "BIF",
                   }).format(calculateOutstandingAmount())}
                 </p>
               </div>
@@ -743,7 +743,7 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
                       <span className="font-medium">
                         {new Intl.NumberFormat("en-US", {
                           style: "currency",
-                          currency: "USD",
+                          currency: "BIF",
                         }).format(invoice.totalAmount)}
                       </span>
                       <Button

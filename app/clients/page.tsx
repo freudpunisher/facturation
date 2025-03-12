@@ -31,6 +31,7 @@ export default function ClientsPage() {
     id: "",
     name: "",
     email: "",
+    nif: "",
     phone: "",
     company: "",
     status: "active",
@@ -90,6 +91,7 @@ export default function ClientsPage() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
+          nif: formData.nif,
           phone: formData.phone,
           company: formData.company,
           status: formData.status,
@@ -205,6 +207,7 @@ export default function ClientsPage() {
       id: client.id,
       name: client.name,
       email: client.email,
+      nif: client.nif,
       phone: client.phone,
       company: client.company,
       status: client.status,
@@ -218,6 +221,7 @@ export default function ClientsPage() {
       id: "",
       name: "",
       email: "",
+      nif: "",
       phone: "",
       company: "",
       status: "active",
@@ -281,6 +285,19 @@ export default function ClientsPage() {
                       onChange={handleInputChange}
                       className="col-span-3"
                       required
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="nif" className="text-right">
+                      NIF
+                    </Label>
+                    <Input
+                      id="nif"
+                      name="nif"
+                      value={formData.nif}
+                      onChange={handleInputChange}
+                      className="col-span-3"
+                      
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">

@@ -8,6 +8,7 @@ export const clients = pgTable('clients', {
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).unique().notNull(),
   phone: varchar('phone', { length: 20 }).notNull(),
+  nifClient: varchar('nifClient', { length: 50 }).unique(),
   company: varchar('company', { length: 255 }).notNull(),
   status: varchar('status', { enum: ['active', 'inactive'] }).default('active'),
   createdAt: timestamp('created_at').defaultNow().notNull(),

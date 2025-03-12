@@ -18,6 +18,7 @@ export type Client = {
   id: string
   name: string
   email: string
+  nif: string
   phone: string
   company: string
   status: "active" | "inactive"
@@ -293,7 +294,7 @@ export const invoiceItemColumns: ColumnDef<InvoiceItem>[] = [
       const amount = Number.parseFloat(row.getValue("unitPrice"))
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: "USD",
+        currency: "BIF",
       }).format(amount)
       return <div>{formatted}</div>
     },
@@ -305,7 +306,7 @@ export const invoiceItemColumns: ColumnDef<InvoiceItem>[] = [
       const amount = Number.parseFloat(row.getValue("total"))
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: "USD",
+        currency: "BIF",
       }).format(amount)
       return <div>{formatted}</div>
     },
