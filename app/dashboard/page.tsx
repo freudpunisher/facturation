@@ -1,55 +1,97 @@
-import React, { useState } from 'react';
+"use client"
+
+import React, { useState, useEffect } from 'react';
 import { Bar, Pie } from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { DollarSign, Users, FileText, Calendar, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { DollarSign, Users, FileText, Calendar, AlertCircle, CheckCircle, Clock, Loader2 } from 'lucide-react';
+import Layout from '@/components/kokonutui/layout';
 
-// Mock data based on the schema
-const mockClients = [
-  { id: 1, name: 'Acme Corp', email: 'contact@acme.com', phone: '555-1234', company: 'Acme Corporation', status: 'active' },
-  { id: 2, name: 'Globex Inc', email: 'info@globex.com', phone: '555-5678', company: 'Globex International', status: 'active' },
-  { id: 3, name: 'Wayne Enterprises', email: 'bruce@wayne.com', phone: '555-9012', company: 'Wayne Enterprises', status: 'inactive' },
-  { id: 4, name: 'Stark Industries', email: 'tony@stark.com', phone: '555-3456', company: 'Stark Industries', status: 'active' },
-];
-
-const mockInvoices = [
-  { id: 1, invoiceNumber: 'INV-001', clientId: 1, totalAmount: 1250.00, taxAmount: 250.00, status: 'paid', createdAt: '2025-02-15' },
-  { id: 2, invoiceNumber: 'INV-002', clientId: 2, totalAmount: 3750.00, taxAmount: 750.00, status: 'pending', createdAt: '2025-02-28' },
-  { id: 3, invoiceNumber: 'INV-003', clientId: 1, totalAmount: 500.00, taxAmount: 100.00, status: 'overdue', createdAt: '2025-01-31' },
-  { id: 4, invoiceNumber: 'INV-004', clientId: 4, totalAmount: 2000.00, taxAmount: 400.00, status: 'pending', createdAt: '2025-03-05' },
-  { id: 5, invoiceNumber: 'INV-005', clientId: 3, totalAmount: 1800.00, taxAmount: 360.00, status: 'paid', createdAt: '2025-03-10' },
-];
-
-const mockDetails = [
-  { id: 1, invoiceId: 1, description: 'Web Development', quantity: 25, unitPrice: 50.00, total: 1250.00 },
-  { id: 2, invoiceId: 2, description: 'Consulting Services', quantity: 15, unitPrice: 250.00, total: 3750.00 },
-  { id: 3, invoiceId: 3, description: 'Design Work', quantity: 10, unitPrice: 50.00, total: 500.00 },
-  { id: 4, invoiceId: 4, description: 'System Maintenance', quantity: 20, unitPrice: 100.00, total: 2000.00 },
-  { id: 5, invoiceId: 5, description: 'Software License', quantity: 3, unitPrice: 600.00, total: 1800.00 },
-];
-
-// Dashboard component
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  interface Client {
+    id: number;
+    name: string;
+    company: string;
+    email: string;
+    phone: string;
+    status: string;
+  }
+
+  const [clients, setClients] = useState<Client[]>([]);
+  interface Invoice {
+    id: number;
+    invoiceNumber: string;
+    clientId: number;
+    createdAt: string;
+    totalAmount: number;
+    taxAmount: number;
+    status: string;
+  }
+
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [invoiceDetails, setInvoiceDetails] = useState<any[]>([]);
+  const [taxes, setTaxes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch data from your API
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Replace these URLs with your actual API endpoints
+        const clientsRes = await fetch('/api/clients');
+        const invoicesRes = await fetch('/api/invoices');
+        const detailsRes = await fetch('/api/invoice-items');
+        const taxesRes = await fetch('/api/taxes');
+
+        if (!clientsRes.ok || !invoicesRes.ok || !detailsRes.ok || !taxesRes.ok) {
+          throw new Error('Failed to fetch data from API');
+        }
+
+        const clientsData = await clientsRes.json();
+        const invoicesData = await invoicesRes.json();
+        const detailsData = await detailsRes.json();
+        const taxesData = await taxesRes.json();
+
+        setClients(clientsData);
+        setInvoices(invoicesData);
+        setInvoiceDetails(detailsData);
+        setTaxes(taxesData);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Calculate metrics for overview
-  const totalRevenue = mockInvoices.reduce((sum, invoice) => sum + Number(invoice.totalAmount), 0);
-  const totalTax = mockInvoices.reduce((sum, invoice) => sum + Number(invoice.taxAmount), 0);
-  const activeClients = mockClients.filter(client => client.status === 'active').length;
-  const pendingInvoices = mockInvoices.filter(invoice => invoice.status === 'pending').length;
-  const overdueInvoices = mockInvoices.filter(invoice => invoice.status === 'overdue').length;
+  const totalRevenue = invoices.reduce((sum, invoice) => sum + Number(invoice.totalAmount), 0);
+  const totalTax = invoices.reduce((sum, invoice) => sum + Number(invoice.taxAmount), 0);
+  const activeClients = clients.filter(client => client.status === 'active').length;
+  const pendingInvoices = invoices.filter(invoice => invoice.status === 'pending').length;
+  const overdueInvoices = invoices.filter(invoice => invoice.status === 'overdue').length;
 
   // Data for charts
   const statusData = [
-    { name: 'Paid', value: mockInvoices.filter(i => i.status === 'paid').length, color: '#4caf50' },
-    { name: 'Pending', value: mockInvoices.filter(i => i.status === 'pending').length, color: '#ff9800' },
-    { name: 'Overdue', value: mockInvoices.filter(i => i.status === 'overdue').length, color: '#f44336' },
+    { name: 'Paid', value: invoices.filter(i => i.status === 'paid').length, color: '#4caf50' },
+    { name: 'Pending', value: invoices.filter(i => i.status === 'pending').length, color: '#ff9800' },
+    { name: 'Overdue', value: invoices.filter(i => i.status === 'overdue').length, color: '#f44336' },
   ];
 
-  const revenueByClient = mockClients.map(client => {
-    const clientInvoices = mockInvoices.filter(invoice => invoice.clientId === client.id);
+  const revenueByClient = clients.map(client => {
+    const clientInvoices = invoices.filter(invoice => invoice.clientId === client.id);
     return {
       name: client.name,
       revenue: clientInvoices.reduce((sum, invoice) => sum + Number(invoice.totalAmount), 0),
@@ -58,7 +100,7 @@ const Dashboard = () => {
 
   // Helper function to get client name by id
   const getClientName = (clientId: number) => {
-    const client = mockClients.find(c => c.id === clientId);
+    const client = clients.find(c => c.id === clientId);
     return client ? client.name : 'Unknown Client';
   };
 
@@ -80,7 +122,34 @@ const Dashboard = () => {
     }
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p>Loading dashboard data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center text-red-500">
+          <AlertCircle className="h-8 w-8 mx-auto mb-4" />
+          <h2 className="text-xl font-bold mb-2">Error Loading Data</h2>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
+    <Layout>
+
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Invoice Management Dashboard</h1>
       
@@ -101,7 +170,7 @@ const Dashboard = () => {
                 <DollarSign className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${totalRevenue.toLocaleString()}</div>
+                <div className="text-2xl font-bold">{totalRevenue.toLocaleString()}</div>
               </CardContent>
             </Card>
             
@@ -131,7 +200,7 @@ const Dashboard = () => {
                 <FileText className="h-4 w-4 text-gray-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${totalTax.toLocaleString()}</div>
+                <div className="text-2xl font-bold">{totalTax.toLocaleString()}</div>
               </CardContent>
             </Card>
           </div>
@@ -167,12 +236,12 @@ const Dashboard = () => {
                       <div className="w-full">
                         <div className="flex justify-between mb-1">
                           <span className="text-sm font-medium">{client.name}</span>
-                          <span className="text-sm font-medium">${client.revenue.toLocaleString()}</span>
+                          <span className="text-sm font-medium">{client.revenue.toLocaleString()}</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div 
                             className="bg-blue-600 h-2 rounded-full" 
-                            style={{ width: `${(client.revenue / totalRevenue * 100)}%` }}
+                            style={{ width: `{(client.revenue / totalRevenue * 100)}%` }}
                           ></div>
                         </div>
                       </div>
@@ -203,7 +272,7 @@ const Dashboard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockClients.map((client) => (
+                  {clients.map((client) => (
                     <TableRow key={client.id}>
                       <TableCell className="font-medium">{client.name}</TableCell>
                       <TableCell>{client.company}</TableCell>
@@ -231,20 +300,20 @@ const Dashboard = () => {
                   <TableRow>
                     <TableHead>Invoice #</TableHead>
                     <TableHead>Client</TableHead>
-                    <TableHead>Date</TableHead>
+                    <TableHead>Created</TableHead>
                     <TableHead>Amount</TableHead>
                     <TableHead>Tax</TableHead>
                     <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockInvoices.map((invoice) => (
+                  {invoices.map((invoice) => (
                     <TableRow key={invoice.id}>
                       <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
                       <TableCell>{getClientName(invoice.clientId)}</TableCell>
-                      <TableCell>{invoice.createdAt}</TableCell>
-                      <TableCell>${invoice.totalAmount.toLocaleString()}</TableCell>
-                      <TableCell>${invoice.taxAmount.toLocaleString()}</TableCell>
+                      <TableCell>{new Date(invoice.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell>{Number(invoice.totalAmount).toLocaleString()}</TableCell>
+                      <TableCell>{Number(invoice.taxAmount).toLocaleString()}</TableCell>
                       <TableCell>{getStatusBadge(invoice.status)}</TableCell>
                     </TableRow>
                   ))}
@@ -268,7 +337,7 @@ const Dashboard = () => {
                     <CardTitle className="text-sm font-medium">Total Tax Collected</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">${totalTax.toLocaleString()}</div>
+                    <div className="text-2xl font-bold">{totalTax.toLocaleString()}</div>
                     <p className="text-sm text-gray-500 mt-1">Across all invoices</p>
                   </CardContent>
                 </Card>
@@ -278,8 +347,10 @@ const Dashboard = () => {
                     <CardTitle className="text-sm font-medium">Tax Rate</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">20%</div>
-                    <p className="text-sm text-gray-500 mt-1">Standard rate applied</p>
+                    <div className="text-2xl font-bold">
+                      {(totalTax / (totalRevenue - totalTax) * 100).toFixed(2)}%
+                    </div>
+                    <p className="text-sm text-gray-500 mt-1">Average rate applied</p>
                   </CardContent>
                 </Card>
               </div>
@@ -289,19 +360,30 @@ const Dashboard = () => {
                   <TableRow>
                     <TableHead>Invoice #</TableHead>
                     <TableHead>Client</TableHead>
-                    <TableHead>Date</TableHead>
+                    <TableHead>Registered Date</TableHead>
                     <TableHead>Tax Amount</TableHead>
+                    <TableHead>Authority Ref</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {mockInvoices.map((invoice) => (
-                    <TableRow key={invoice.id}>
-                      <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
-                      <TableCell>{getClientName(invoice.clientId)}</TableCell>
-                      <TableCell>{invoice.createdAt}</TableCell>
-                      <TableCell>${invoice.taxAmount.toLocaleString()}</TableCell>
-                    </TableRow>
-                  ))}
+                  {taxes.map((tax, index) => {
+                    const invoice = invoices.find(inv => inv.id === tax.invoiceId);
+                    return (
+                      <TableRow key={tax.id || index}>
+                        <TableCell className="font-medium">
+                          {invoice ? invoice.invoiceNumber : '-'}
+                        </TableCell>
+                        <TableCell>
+                          {invoice ? getClientName(invoice.clientId) : '-'}
+                        </TableCell>
+                        <TableCell>{tax.invoice_registered_date}</TableCell>
+                        <TableCell>
+                          {invoice ? Number(invoice.taxAmount).toLocaleString() : '-'}
+                        </TableCell>
+                        <TableCell>{tax.authorityReference || '-'}</TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </CardContent>
@@ -309,6 +391,7 @@ const Dashboard = () => {
         </TabsContent>
       </Tabs>
     </div>
+    </Layout>
   );
 };
 

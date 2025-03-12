@@ -18,7 +18,7 @@ export type Client = {
   id: string
   name: string
   email: string
-  nif: string
+  nifClient: string
   phone: string
   company: string
   status: "active" | "inactive"

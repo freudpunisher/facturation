@@ -44,6 +44,7 @@ interface Invoice {
   invoiceNumber: string;
   createdAt: string;
   totalAmount: number;
+  nifClient: string;
   taxAmount: number;
   status: "paid" | "pending" | "overdue";
   sync: boolean;
@@ -235,9 +236,9 @@ const {toast} = useToast();
       if (!invoice) throw new Error("Invoice not found");
       setSyncingInvoice(invoice); 
       // 2. Get invoice items if not already loaded
-      if (!invoiceItems[invoiceId]) {
+      
         items = await fetchInvoiceItems(invoiceId);
-      }
+      
   
       // 3. Authenticate with EBMS API to get token
       const authResponse = await fetch(`${process.env.NEXT_PUBLIC_EBMS_API_URL}/login/`, {
@@ -379,7 +380,8 @@ console.log(formatEBMSDate(invoice.createdAt))
     tp_type: "1", // Type of taxpayer
     tp_name: "CERTRAG",
     tp_TIN: "4000003568", // Replace with actual company TIN
-    tp_trade_number: "65905", // Replace with actual company TIN
+    tp_trade_number: "65905",
+    customer_TIN: invoice.nifClient || "", // Replace with actual company TIN
     customer_name: invoice.client.name,
     customer_address: invoice.client.address || "",
     invoice_currency: "BIF",
