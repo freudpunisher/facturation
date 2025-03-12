@@ -21,6 +21,7 @@ export async function GET(request: Request) {
         client: {
           name: clients.name,
           email: clients.email,
+          nifClient: clients.nifClient,
           company: clients.company
         }
       })

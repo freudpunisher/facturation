@@ -44,7 +44,7 @@ interface Invoice {
   invoiceNumber: string;
   createdAt: string;
   totalAmount: number;
-  nifClient: string;
+ 
   taxAmount: number;
   status: "paid" | "pending" | "overdue";
   sync: boolean;
@@ -54,6 +54,7 @@ interface Invoice {
 interface Client {
   id: number;
   name: string;
+  nifClient: string;
   company: string;
   address?: string;
   email: string;
@@ -370,7 +371,7 @@ const transformToEBMSFormat = (invoice: Invoice, items: InvoiceItem[]) => {
 console.log(invoiceDate, "invoiceDateFormatted");
 const date = new Date(invoice.createdAt).toISOString().split('T')[0];
 
-console.log(formatEBMSDate(invoice.createdAt))
+
   
   
   return {
@@ -381,9 +382,9 @@ console.log(formatEBMSDate(invoice.createdAt))
     tp_name: "CERTRAG",
     tp_TIN: "4000003568", // Replace with actual company TIN
     tp_trade_number: "65905",
-    customer_TIN: invoice.nifClient || "", // Replace with actual company TIN
+    customer_TIN: invoice.client.nifClient, // Replace with actual company TIN
     customer_name: invoice.client.name,
-    customer_address: invoice.client.address || "",
+    customer_address: invoice.client.address,
     invoice_currency: "BIF",
     tp_phone_number:"79764778",
     tp_address_province:"BUJUMBURA",
