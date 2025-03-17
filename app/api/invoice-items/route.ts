@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       }, 0);
 
       // Assuming 10% tax rate - modify this if you have different tax logic
-      const taxRate = 0.10;
+      const taxRate = 0.18;
       const taxAmount = subtotal * taxRate;
       const totalAmount = subtotal + taxAmount;
 

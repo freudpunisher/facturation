@@ -506,6 +506,7 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
         if (!response.ok) throw new Error('Failed to fetch items');
         const items = await response.json();
         setInvoiceItems(prev => ({ ...prev, [invoiceId]: items }));
+        console.log(items, "items");
         setPrintingInvoiceItems(items);
       } else {
         setPrintingInvoiceItems(invoiceItems[invoiceId]);
