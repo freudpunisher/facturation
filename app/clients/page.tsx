@@ -92,26 +92,33 @@ export default function ClientsPage() {
   const handleAddClient = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
+      // Create the base request body
+      const requestBody: any = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        status: formData.status,
+        vat_taxpayer: formData.vat_taxpayer ? 1 : 0, // Convert boolean to 0/1 for database
+      }
+      
+      // Only add nifClient to the request body if it's not empty
+      if (formData.nifClient && formData.nifClient.trim() !== '') {
+        requestBody.nifClient = formData.nifClient
+      }
+      
       const response = await fetch('/api/clients', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          nifClient: formData.nifClient,
-          phone: formData.phone,
-          company: formData.company,
-          status: formData.status,
-          vat_taxpayer: formData.vat_taxpayer ? 1 : 0, // Convert boolean to 0/1 for database
-        }),
+        body: JSON.stringify(requestBody),
       })
-
+  
       if (!response.ok) {
         throw new Error('Failed to add client')
       }
-
+  
       // Refresh client list
       await fetchClients()
       

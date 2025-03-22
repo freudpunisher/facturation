@@ -44,7 +44,6 @@ interface Invoice {
   invoiceNumber: string;
   createdAt: string;
   totalAmount: number;
- 
   taxAmount: number;
   status: "paid" | "pending" | "overdue";
   sync: boolean;
@@ -409,11 +408,11 @@ const date = new Date(invoice.createdAt).toISOString().split('T')[0];
       item_designation: item.description,
       item_quantity: item.quantity.toString(),
       item_price: item.unitPrice,
-      item_ct: "1", // Tax category
-      item_tl: "18", // Tax rate (18%)
-      item_price_nvat: ((item.quantity * item.unitPrice) - calculateItemTax(item)),
-      vat: calculateItemTax(item),
-      item_price_wvat: (item.quantity * item.unitPrice),
+      item_ct: "0", // Tax category
+      item_tl: "0", // Tax rate (18%)
+      item_price_nvat: ((item.quantity * item.unitPrice) +0),
+      vat: calculateItemTax(item, invoice.taxAmount),
+      item_price_wvat:  calculateItemTax(item, invoice.taxAmount) +((item.quantity * item.unitPrice) +0),
       item_total_amount: (item.quantity * item.unitPrice)
     })),
     // invoice_vat_amount: invoice.taxAmount,
@@ -422,8 +421,8 @@ const date = new Date(invoice.createdAt).toISOString().split('T')[0];
 };
 
 // Helper function to calculate tax for an item
-const calculateItemTax = (item: InvoiceItem) => {
-  return (item.quantity * item.unitPrice) * 0.18 / 1.18; // Assuming 18% VAT, extracting from total
+const calculateItemTax = (item: InvoiceItem, tax: any) => {
+  return (item.quantity * item.unitPrice) * tax ; // Assuming 18% VAT, extracting from total
 }
 
   const resetFilters = () => {

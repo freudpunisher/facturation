@@ -24,6 +24,7 @@ export async function POST(request: Request) {
     const newClient = await db.insert(clients).values(body).returning()
     return NextResponse.json(newClient[0])
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { error: 'Failed to create client' },
       { status: 500 }
