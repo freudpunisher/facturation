@@ -11,7 +11,7 @@ export const clients = pgTable('clients', {
   nifClient: varchar('nifClient', { length: 50 }).unique(),
   company: varchar('company', { length: 255 }).notNull(),
   status: varchar('status', { enum: ['active', 'inactive'] }).default('active'),
-  tp_fiscal_center: varchar('status', { enum: ['DGC', 'DMC','DPMC'] }).default('DMC'),
+  // tp_fiscal_center: varchar('status', { enum: ['DGC', 'DMC','DPMC'] }).default('DMC'),
   vat_taxpayer:integer('vat_taxpayer').default(0),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
@@ -25,6 +25,10 @@ export const facturations = pgTable('facturations', {
   invoiceNumber: varchar('invoice_number', { length: 50 }).unique().notNull(),
   clientId: integer('client_id').references(() => clients.id).notNull(),
   sync: boolean('sync').default(false),
+
+  invoice_type: varchar('invoice_type', { enum: ['FN', 'FA', 'RC', 'RHF'] }).default('FN'),
+  payment_type: integer('vat_taxpayer').default(0),
+  invoice_currency: varchar('invoice_currency', { enum: ['EUR', 'USD', 'BIF'] }).default('BIF'),
   // Removed issueDate and dueDate fields
   totalAmount: decimal('total_amount', { precision: 10, scale: 2 }).notNull(),
   taxAmount: decimal('tax_amount', { precision: 10, scale: 2 }).notNull(),
