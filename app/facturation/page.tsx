@@ -192,8 +192,228 @@ const {toast} = useToast();
   };
 
   const handlePrint = (invoice: Invoice) => {
-    setPrintingInvoice(invoice);
-    setTimeout(() => window.print(), 100);
+    // First ensure we have the invoice items
+    if (!invoiceItems[invoice.id]) {
+      fetchInvoiceItems(invoice.id).then(items => {
+        generatePrintWindow(invoice, items);
+      });
+    } else {
+      generatePrintWindow(invoice, invoiceItems[invoice.id]);
+    }
+  };
+  
+  const generatePrintWindow = (invoice: Invoice, items: InvoiceItem[]) => {
+    // Format date properly
+    const formattedDate = new Date(invoice.createdAt).toLocaleDateString('en-GB'); // DD/MM/YYYY format
+    
+    // Calculate subtotal
+    const subtotal = invoice.totalAmount - invoice.taxAmount;
+    
+    // Create a professional invoice HTML
+    const printInvoiceHTML = `
+      <html>
+      <head>
+        <title>Invoice ${invoice.invoiceNumber}</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+          }
+          .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+          }
+          .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+          }
+          .invoice-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2a2a2a;
+          }
+          .company-details {
+            text-align: right;
+            font-size: 14px;
+          }
+          .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+          }
+          .client-info, .invoice-info {
+            font-size: 14px;
+          }
+          .client-info h3, .invoice-info h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #555;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+          }
+          th {
+            padding: 10px;
+            text-align: left;
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #ddd;
+            font-weight: bold;
+          }
+          td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+          }
+          .amount-col {
+            text-align: right;
+          }
+          .totals {
+            margin-top: 30px;
+            text-align: right;
+          }
+          .totals div {
+            margin-bottom: 5px;
+          }
+          .total-row {
+            font-weight: bold;
+            font-size: 16px;
+            border-top: 2px solid #ddd;
+            padding-top: 10px;
+          }
+          .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+          }
+          .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+          }
+          .status-paid {
+            background-color: #d4edda;
+            color: #155724;
+          }
+          .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+          }
+          .status-overdue {
+            background-color: #f8d7da;
+            color: #721c24;
+          }
+          @media print {
+            body {
+              -webkit-print-color-adjust: exact;
+              color-adjust: exact;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="invoice-container">
+          <div class="invoice-header">
+            <div>
+              <div class="invoice-title">INVOICE</div>
+              <div>
+                <span class="status-badge status-${invoice.status}">
+                  ${invoice.status.toUpperCase()}
+                </span>
+                ${invoice.sync ? '<span class="status-badge status-paid" style="margin-left: 5px;">SYNCED</span>' : ''}
+              </div>
+            </div>
+            <div class="company-details">
+              <div style="font-weight: bold; font-size: 16px;">CERTRAG</div>
+              <div>NIF: 4000003568</div>
+              <div>Phone: 79764778</div>
+              <div>28 Avenue Rukambara, Kigobe</div>
+              <div>NTAHANGWA, BUJUMBURA</div>
+            </div>
+          </div>
+  
+          <div class="invoice-details">
+            <div class="client-info">
+              <h3>BILL TO:</h3>
+              <div style="font-weight: bold;">${invoice.client.name}</div>
+              <div>${invoice.client.company}</div>
+              ${invoice.client.address ? `<div>${invoice.client.address}</div>` : ''}
+              <div>NIF: ${invoice.client.nifClient}</div>
+              <div>Email: ${invoice.client.email}</div>
+              <div>Phone: ${invoice.client.phone}</div>
+            </div>
+            <div class="invoice-info">
+              <h3>INVOICE DETAILS:</h3>
+              <div><strong>Invoice Number:</strong> ${invoice.invoiceNumber}</div>
+              <div><strong>Date:</strong> ${formattedDate}</div>
+            </div>
+          </div>
+  
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 50%;">Description</th>
+                <th class="amount-col">Quantity</th>
+                <th class="amount-col">Unit Price</th>
+                <th class="amount-col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items.map(item => `
+                <tr>
+                  <td>${item.description}</td>
+                  <td class="amount-col">${item.quantity}</td>
+                  <td class="amount-col">${item.unitPrice.toLocaleString()} BIF</td>
+                  <td class="amount-col">${(item.quantity * item.unitPrice).toLocaleString()} BIF</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+  
+          <div class="totals">
+            <div><span style="display: inline-block; width: 150px; text-align: left;">Subtotal:</span> ${subtotal.toLocaleString()} BIF</div>
+            <div><span style="display: inline-block; width: 150px; text-align: left;">Tax (18%):</span> ${invoice.taxAmount.toLocaleString()} BIF</div>
+            <div class="total-row"><span style="display: inline-block; width: 150px; text-align: left;">TOTAL:</span> ${invoice.totalAmount.toLocaleString()} BIF</div>
+          </div>
+  
+          <div class="footer">
+            <p>Thank you for your business!</p>
+            <p>CERTRAG | NIF: 4000003568 | Bujumbura, Burundi</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+  
+    // Open a new window and write the HTML content
+    const printWindow = window.open('', '', 'width=800,height=600');
+    if (printWindow) {
+      printWindow.document.write(printInvoiceHTML);
+      printWindow.document.close();
+    
+    // Wait for content to load before printing
+    printWindow.onload = function() {
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 250);
+    };
+    } else {
+      console.error("Failed to open print window.");
+    }
+    
   };
 
   const handleDelete = async () => {
