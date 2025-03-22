@@ -1,7 +1,7 @@
+// components/Sidebar.tsx
 "use client"
 
 import type React from "react"
-
 import {
   BarChart2,
   Building2,
@@ -20,17 +20,19 @@ import {
   Percent,
   User,
 } from "lucide-react"
-
 import Link from "next/link"
 import { useState } from "react"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
+import { useLoading } from "../../components/LoadingProvider" // Import the loading context
 
 export default function Sidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
+  const { setLoading } = useLoading() // Get the setLoading function
 
   function handleNavigation() {
+    setLoading(true) // Set loading to true when navigation starts
     setIsMobileMenuOpen(false)
   }
 

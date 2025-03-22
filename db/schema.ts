@@ -11,6 +11,8 @@ export const clients = pgTable('clients', {
   nifClient: varchar('nifClient', { length: 50 }).unique(),
   company: varchar('company', { length: 255 }).notNull(),
   status: varchar('status', { enum: ['active', 'inactive'] }).default('active'),
+  tp_fiscal_center: varchar('status', { enum: ['DGC', 'DMC','DPMC'] }).default('DMC'),
+  vat_taxpayer:integer('vat_taxpayer').default(0),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
