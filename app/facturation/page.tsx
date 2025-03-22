@@ -412,7 +412,7 @@ const date = new Date(invoice.createdAt).toISOString().split('T')[0];
       item_tl: "0", // Tax rate (18%)
       item_price_nvat: ((item.quantity * item.unitPrice) +0),
       vat: calculateItemTax(item, invoice.taxAmount),
-      item_price_wvat:  calculateItemTax(item, invoice.taxAmount) +((item.quantity * item.unitPrice) +0),
+      item_price_wvat:  calculateItemTax(item, invoice.taxAmount)+((item.quantity * item.unitPrice) +0),
       item_total_amount: (item.quantity * item.unitPrice)
     })),
     // invoice_vat_amount: invoice.taxAmount,
