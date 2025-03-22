@@ -102,7 +102,10 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
     // Removed issueDate and dueDate
     totalAmount: "0", // Start with 0
     taxAmount: "0", // Start with 0
-    status: "pending" as "paid" | "pending" | "overdue"
+    status: "pending" as "paid" | "pending" | "overdue",
+    invoice_type: 'FN',
+    payment_type: 0,
+    invoice_currency: 'BIF'
   });
 
   const [itemFormData, setItemFormData] = useState({
@@ -205,9 +208,12 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
     setClientFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleInvoiceInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInvoiceInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setInvoiceFormData(prev => ({ ...prev, [name]: value }));
+    setInvoiceFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleInvoiceStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -264,12 +270,12 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
   // Create new invoice
   const handleInvoiceSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+    
     try {
       // Generate a unique invoice number (e.g., using timestamp)
       const invoiceNumber = `INV-${Date.now()}`;
-  
-      // Create the invoice with status "paid"
+      
+      // Create the invoice with all fields
       const response = await fetch('/api/invoices', {
         method: 'POST',
         headers: {
@@ -280,32 +286,35 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
           clientId: parseInt(clientId),
           totalAmount: 0, // Start with 0, will be updated when items are added
           taxAmount: 0, // Start with 0, will be updated when items are added
-          status: "paid", // Set status to "paid"
+          status: invoiceFormData.status,
+          invoice_type: invoiceFormData.invoice_type,
+          payment_type: parseInt(invoiceFormData.payment_type.toString()), // Ensure it's an integer
+          invoice_currency: invoiceFormData.invoice_currency,
         }),
       });
-  
+      
       if (!response.ok) {
         throw new Error('Failed to create invoice');
       }
-  
+      
       // Get the newly created invoice
       const newInvoice = await response.json();
-  
+      
       // Refresh the invoices list
       const invoicesResponse = await fetch(`/api/invoices?clientId=${clientId}`);
       const invoicesData = await invoicesResponse.json();
       setInvoices(invoicesData);
-  
+      
       // Set the newly created invoice as the selected one for adding items
       setExpandedInvoice(newInvoice.id.toString());
       setSelectedInvoiceId(newInvoice.id.toString());
-  
+      
       // Close the new invoice dialog
       setIsNewInvoiceOpen(false);
-  
+      
       // Open the add item dialog automatically
       setIsNewItemOpen(true);
-  
+      
       toast({
         title: "Success",
         description: "Invoice created successfully. Add items to this invoice.",
@@ -318,7 +327,7 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
       });
     }
   };
-
+  
 
   const updateInvoiceTotal = async (invoiceId: string) => {
     try {
@@ -664,7 +673,7 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
             <h2 className="text-xl font-semibold">Billing History</h2>
             <Dialog open={isNewInvoiceOpen} onOpenChange={setIsNewInvoiceOpen}>
               <DialogTrigger asChild>
-                <Button onClick={handleInvoiceSubmit}>
+                <Button>
                   <Plus className="mr-2 h-4 w-4" />
                   New Invoice
                 </Button>
@@ -686,9 +695,69 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
           value={invoiceFormData.invoiceNumber}
           onChange={handleInvoiceInputChange}
           className="col-span-3"
-          required
+          placeholder="Will be auto-generated"
+          disabled
         />
       </div>
+      
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="invoice_type" className="text-right">
+          Invoice Type
+        </Label>
+        <select
+          id="invoice_type"
+          name="invoice_type"
+          value={invoiceFormData.invoice_type}
+          onChange={handleInvoiceInputChange}
+          className="col-span-3 h-10 rounded-md border border-input bg-background px-3 py-2"
+          required
+        >
+          <option value="FN">FN - Normal Invoice</option>
+          <option value="FA">FA - Advance Invoice</option>
+          <option value="RC">RC - Credit Note</option>
+          <option value="RHF">RHF - Non-fiscal Receipt</option>
+        </select>
+      </div>
+      
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="payment_type" className="text-right">
+          Payment Type
+        </Label>
+        <select
+          id="payment_type"
+          name="payment_type"
+          value={invoiceFormData.payment_type}
+          onChange={handleInvoiceInputChange}
+          className="col-span-3 h-10 rounded-md border border-input bg-background px-3 py-2"
+          required
+        >
+          <option value="0">0 - Cash</option>
+          <option value="1">1 - Check</option>
+          <option value="2">2 - Bank Card</option>
+          <option value="3">3 - Bank Transfer</option>
+          <option value="4">4 - Mobile Money</option>
+          <option value="5">5 - Other</option>
+        </select>
+      </div>
+      
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="invoice_currency" className="text-right">
+          Currency
+        </Label>
+        <select
+          id="invoice_currency"
+          name="invoice_currency"
+          value={invoiceFormData.invoice_currency}
+          onChange={handleInvoiceInputChange}
+          className="col-span-3 h-10 rounded-md border border-input bg-background px-3 py-2"
+          required
+        >
+          <option value="BIF">BIF - Burundian Franc</option>
+          <option value="USD">USD - US Dollar</option>
+          <option value="EUR">EUR - Euro</option>
+        </select>
+      </div>
+      
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="status" className="text-right">
           Status
@@ -697,7 +766,7 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
           id="status"
           name="status"
           value={invoiceFormData.status}
-          onChange={handleInvoiceStatusChange}
+          onChange={handleInvoiceInputChange}
           className="col-span-3 h-10 rounded-md border border-input bg-background px-3 py-2"
           required
         >

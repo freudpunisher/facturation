@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Plus, AlertCircle } from "lucide-react"
 import Layout from "@/components/kokonutui/layout"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -35,6 +36,7 @@ export default function ClientsPage() {
     phone: "",
     company: "",
     status: "active",
+    vat_taxpayer: false, // Added for VAT taxpayer checkbox
   })
   const { toast } = useToast()
 
@@ -60,8 +62,10 @@ export default function ClientsPage() {
         name: client.name,
         email: client.email,
         phone: client.phone,
+        nifClient: client.nifClient,
         company: client.company,
         status: client.status,
+        vat_taxpayer: Boolean(client.vat_taxpayer), // Convert from 0/1 to boolean
         createdAt: new Date(client.createdAt).toISOString().split('T')[0],
       }))
       
@@ -77,6 +81,11 @@ export default function ClientsPage() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  // Handle checkbox change for vat_taxpayer
+  const handleCheckboxChange = (checked: boolean) => {
+    setFormData((prev) => ({ ...prev, vat_taxpayer: checked }))
   }
 
   // Handle form submission for adding a new client
@@ -95,6 +104,7 @@ export default function ClientsPage() {
           phone: formData.phone,
           company: formData.company,
           status: formData.status,
+          vat_taxpayer: formData.vat_taxpayer ? 1 : 0, // Convert boolean to 0/1 for database
         }),
       })
 
@@ -139,6 +149,7 @@ export default function ClientsPage() {
           phone: formData.phone,
           company: formData.company,
           status: formData.status,
+          vat_taxpayer: formData.vat_taxpayer ? 1 : 0, // Convert boolean to 0/1 for database
         }),
       })
 
@@ -207,10 +218,11 @@ export default function ClientsPage() {
       id: client.id,
       name: client.name,
       email: client.email,
-      nifClient: client.nifClient,
+      nifClient: client.nifClient || "",
       phone: client.phone,
       company: client.company,
       status: client.status,
+      vat_taxpayer: client.vat_taxpayer || false,
     })
     setIsEditDialogOpen(true)
   }
@@ -225,6 +237,7 @@ export default function ClientsPage() {
       phone: "",
       company: "",
       status: "active",
+      vat_taxpayer: false,
     })
   }
 
@@ -297,7 +310,6 @@ export default function ClientsPage() {
                       value={formData.nifClient}
                       onChange={handleInputChange}
                       className="col-span-3"
-                      
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
@@ -339,6 +351,20 @@ export default function ClientsPage() {
                       className="col-span-3"
                       required
                     />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="text-right">
+                      <Label htmlFor="vat_taxpayer">
+                        Assujetti à la TVA
+                      </Label>
+                    </div>
+                    <div className="col-span-3 flex items-center space-x-2">
+                      <Checkbox 
+                        id="vat_taxpayer" 
+                        checked={formData.vat_taxpayer} 
+                        onCheckedChange={handleCheckboxChange}
+                      />
+                    </div>
                   </div>
                 </div>
                 <DialogFooter>
@@ -447,6 +473,20 @@ export default function ClientsPage() {
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <div className="text-right">
+                  <Label htmlFor="edit-vat_taxpayer">
+                    Assujetti à la TVA
+                  </Label>
+                </div>
+                <div className="col-span-3 flex items-center space-x-2">
+                  <Checkbox 
+                    id="edit-vat_taxpayer" 
+                    checked={formData.vat_taxpayer} 
+                    onCheckedChange={handleCheckboxChange} 
+                  />
+                </div>
               </div>
             </div>
             <DialogFooter>

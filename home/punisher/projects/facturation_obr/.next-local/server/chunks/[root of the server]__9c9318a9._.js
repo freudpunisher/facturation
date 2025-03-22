@@ -166,6 +166,8 @@ const clients = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules
             'inactive'
         ]
     }).default('active'),
+    // tp_fiscal_center: varchar('status', { enum: ['DGC', 'DMC','DPMC'] }).default('DMC'),
+    vat_taxpayer: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$integer$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["integer"])('vat_taxpayer').default(0),
     createdAt: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$timestamp$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["timestamp"])('created_at').defaultNow().notNull(),
     updatedAt: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$timestamp$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["timestamp"])('updated_at').defaultNow().notNull()
 });
@@ -181,6 +183,22 @@ const facturations = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_mo
     }).unique().notNull(),
     clientId: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$integer$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["integer"])('client_id').references(()=>clients.id).notNull(),
     sync: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$boolean$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["boolean"])('sync').default(false),
+    invoice_type: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$varchar$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["varchar"])('invoice_type', {
+        enum: [
+            'FN',
+            'FA',
+            'RC',
+            'RHF'
+        ]
+    }).default('FN'),
+    payment_type: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$integer$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["integer"])('vat_taxpayer').default(0),
+    invoice_currency: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$varchar$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["varchar"])('invoice_currency', {
+        enum: [
+            'EUR',
+            'USD',
+            'BIF'
+        ]
+    }).default('BIF'),
     // Removed issueDate and dueDate fields
     totalAmount: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$numeric$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["decimal"])('total_amount', {
         precision: 10,
@@ -296,16 +314,24 @@ async function POST(request) {
         const result = await __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$index$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["db"].transaction(async (tx)=>{
             // 1. Create the new invoice item
             const [newItem] = await tx.insert(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["detailFacturations"]).values(body).returning();
-            // 2. Calculate new totals
+            // 2. Get all items for this invoice
             const items = await tx.select().from(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["detailFacturations"]).where((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$sql$2f$expressions$2f$conditions$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["eq"])(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["detailFacturations"].invoiceId, body.invoiceId));
+            // 3. Calculate subtotal
             const subtotal = items.reduce((sum, item)=>{
                 return sum + item.quantity * Number(item.unitPrice);
             }, 0);
-            // Assuming 10% tax rate - modify this if you have different tax logic
-            const taxRate = 0.18;
-            const taxAmount = subtotal * taxRate;
-            const totalAmount = subtotal + taxAmount;
-            // 3. Update the invoice with new totals
+            // 4. Get the invoice to find the client
+            const [invoice] = await tx.select().from(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["facturations"]).where((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$sql$2f$expressions$2f$conditions$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["eq"])(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["facturations"].id, body.invoiceId));
+            // 5. Get the client data to check VAT status
+            const [client] = await tx.select().from(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["clients"]).where((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$sql$2f$expressions$2f$conditions$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["eq"])(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["clients"].id, invoice.clientId));
+            // 6. Set tax rate based on client VAT status
+            let taxRate = 0.18; // Default 18% tax
+            if (client.vat_taxpayer === 0) {
+                taxRate = 0; // No tax for VAT taxpayers
+            }
+            const taxAmount = taxRate;
+            const totalAmount = subtotal;
+            // 7. Update the invoice with new totals
             await tx.update(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["facturations"]).set({
                 totalAmount: totalAmount.toString(),
                 taxAmount: taxAmount.toString()

@@ -9,8 +9,9 @@ export async function GET() {
     const allClients = await db.select().from(clients)
     return NextResponse.json(allClients)
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
-      { error: 'Failed to fetch clients' },
+      { error: error },
       { status: 500 }
     )
   }

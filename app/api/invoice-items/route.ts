@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/db'
-import { detailFacturations, facturations } from '@/db/schema'
+import { clients, detailFacturations, facturations } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
 export async function GET(request: Request) {
@@ -31,32 +31,48 @@ export async function POST(request: Request) {
       const [newItem] = await tx.insert(detailFacturations)
         .values(body)
         .returning();
-
-      // 2. Calculate new totals
+      
+      // 2. Get all items for this invoice
       const items = await tx.select()
         .from(detailFacturations)
         .where(eq(detailFacturations.invoiceId, body.invoiceId));
-
+      
+      // 3. Calculate subtotal
       const subtotal = items.reduce((sum, item) => {
         return sum + (item.quantity * Number(item.unitPrice));
       }, 0);
-
-      // Assuming 10% tax rate - modify this if you have different tax logic
-      const taxRate = 0.18;
-      const taxAmount = subtotal * taxRate;
-      const totalAmount = subtotal + taxAmount;
-
-      // 3. Update the invoice with new totals
+      
+      // 4. Get the invoice to find the client
+      const [invoice] = await tx.select()
+        .from(facturations)
+        .where(eq(facturations.id, body.invoiceId));
+      
+      // 5. Get the client data to check VAT status
+      const [client] = await tx.select()
+        .from(clients)
+        .where(eq(clients.id, invoice.clientId));
+      
+      // 6. Set tax rate based on client VAT status
+      let taxRate = 0.18; // Default 18% tax
+      
+      if (client.vat_taxpayer === 0) {
+        taxRate = 0; // No tax for VAT taxpayers
+      }
+      
+      const taxAmount = taxRate;
+      const totalAmount = subtotal;
+      
+      // 7. Update the invoice with new totals
       await tx.update(facturations)
-        .set({ 
+        .set({
           totalAmount: totalAmount.toString(),
           taxAmount: taxAmount.toString()
         })
         .where(eq(facturations.id, body.invoiceId));
-
+      
       return newItem;
     });
-
+    
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error creating invoice item:", error);

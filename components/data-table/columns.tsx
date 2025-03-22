@@ -23,6 +23,7 @@ export type Client = {
   company: string
   status: "active" | "inactive"
   createdAt: string
+  vat_taxpayer: boolean
 }
 
 // Update the clientColumns to include a dedicated View button
