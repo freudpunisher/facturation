@@ -1,10 +1,12 @@
 {
   "/page": "app/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/api/clients/route": "app/api/clients/route.js",
   "/api/invoices/route": "app/api/invoices/route.js",
   "/api/invoice-items/route": "app/api/invoice-items/route.js",
   "/api/taxes/route": "app/api/taxes/route.js",
-  "/clients/page": "app/clients/page.js"
+  "/clients/page": "app/clients/page.js",
+  "/clients/[id]/page": "app/clients/[id]/page.js",
+  "/api/clients/[id]/route": "app/api/clients/[id]/route.js",
+  "/facturation/page": "app/facturation/page.js"
 }
