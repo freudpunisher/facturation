@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Plus, AlertCircle } from "lucide-react"
+import { Plus, AlertCircle, Loader2 } from "lucide-react"
 import Layout from "@/components/kokonutui/layout"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useToast } from "@/components/ui/toaster"
@@ -38,6 +38,9 @@ export default function ClientsPage() {
     status: "active",
     vat_taxpayer: false, // Added for VAT taxpayer checkbox
   })
+
+  const [isLoadingName, setIsLoadingName] = useState(false)
+  const [apiError, setApiError] = useState<string | null>(null)
   const { toast } = useToast()
 
   // Fetch clients on component mount
@@ -76,6 +79,61 @@ export default function ClientsPage() {
       setIsLoading(false)
     }
   }
+
+
+  useEffect(() => {
+    const lookupNif = async (nif: string) => {
+      try {
+        setIsLoadingName(true)
+        setApiError(null)
+        
+        // Get authentication token
+        const loginResponse = await fetch('https://ebms.obr.gov.bi:9443/ebms_api/login/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: "ws400000356800463",
+            password: "^1E6Emt/"
+          }),
+        })
+
+        if (!loginResponse.ok) throw new Error('Authentication failed')
+        const { token, result } = await loginResponse.json()
+console.log(result,"Token");
+        // Get taxpayer information
+        const tinResponse = await fetch('https://ebms.obr.gov.bi:9443/ebms_api/checkTIN/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${result.token}`
+          },
+          body: JSON.stringify({ tp_TIN: nif }),
+        })
+
+        if (!tinResponse.ok) throw new Error('TIN check failed')
+        const tinData = await tinResponse.json()
+
+        if (tinData.success && tinData.result.taxpayer?.[0]?.tp_name) {
+          setFormData(prev => ({ ...prev, name: tinData.result.taxpayer[0].tp_name }))
+        } else {
+          setApiError('No taxpayer found with this NIF')
+        }
+      } catch (err) {
+        setApiError(err instanceof Error ? err.message : 'Failed to fetch taxpayer information')
+      } finally {
+        setIsLoadingName(false)
+      }
+    }
+
+    const timeoutId = setTimeout(() => {
+      const cleanNif = formData.nifClient.trim()
+      if (cleanNif.length >= 9) {
+        lookupNif(cleanNif)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [formData.nifClient])
 
   // Handle input changes for form fields
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -308,17 +366,26 @@ export default function ClientsPage() {
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="nif" className="text-right">
-                      NIF
-                    </Label>
-                    <Input
-                      id="nifClient"
-                      name="nifClient"
-                      value={formData.nifClient}
-                      onChange={handleInputChange}
-                      className="col-span-3"
-                    />
-                  </div>
+    <Label htmlFor="nif" className="text-right">
+      NIF
+    </Label>
+    <div className="col-span-3 relative">
+      <Input
+        id="nifClient"
+        name="nifClient"
+        value={formData.nifClient}
+        onChange={handleInputChange}
+      />
+      {isLoadingName && (
+        <div className="absolute right-3 top-3">
+          <Loader2 className="h-4 w-4 animate-spin" />
+        </div>
+      )}
+      {apiError && (
+        <p className="text-xs text-red-500 mt-1">{apiError}</p>
+      )}
+    </div>
+  </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="email" className="text-right">
                       Email

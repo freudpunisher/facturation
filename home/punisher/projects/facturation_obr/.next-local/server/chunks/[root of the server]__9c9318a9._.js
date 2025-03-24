@@ -191,7 +191,7 @@ const facturations = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_mo
             'RHF'
         ]
     }).default('FN'),
-    payment_type: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$integer$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["integer"])('vat_taxpayer').default(0),
+    payment_type: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$integer$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["integer"])('payment_type').default(0),
     invoice_currency: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$varchar$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["varchar"])('invoice_currency', {
         enum: [
             'EUR',
@@ -199,6 +199,13 @@ const facturations = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_mo
             'BIF'
         ]
     }).default('BIF'),
+    tp_fiscal_center: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$varchar$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["varchar"])('tp_fiscal_center', {
+        enum: [
+            'DGC',
+            'DMC',
+            'DPMC'
+        ]
+    }).default('DMC'),
     // Removed issueDate and dueDate fields
     totalAmount: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$pg$2d$core$2f$columns$2f$numeric$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["decimal"])('total_amount', {
         precision: 10,

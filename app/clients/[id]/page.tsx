@@ -105,7 +105,8 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
     status: "pending" as "paid" | "pending" | "overdue",
     invoice_type: 'FN',
     payment_type: 0,
-    invoice_currency: 'BIF'
+    invoice_currency: 'BIF',
+    tp_fiscal_center:'DMC'
   });
 
   const [itemFormData, setItemFormData] = useState({
@@ -290,6 +291,7 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
           invoice_type: invoiceFormData.invoice_type,
           payment_type: parseInt(invoiceFormData.payment_type.toString()), // Ensure it's an integer
           invoice_currency: invoiceFormData.invoice_currency,
+          tp_fiscal_center: invoiceFormData.tp_fiscal_center,
         }),
       });
       
@@ -718,7 +720,24 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
           <option value="RHF">RHF - Non-fiscal Receipt</option>
         </select>
       </div>
-      
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="tp_fiscal_center" className="text-right">
+        Centre fiscal
+        </Label>
+        <select
+          id="tp_fiscal_center"
+          name="tp_fiscal_center"
+          value={invoiceFormData.tp_fiscal_center}
+          onChange={handleInvoiceInputChange}
+          className="col-span-3 h-10 rounded-md border border-input bg-background px-3 py-2"
+          required
+        >
+          <option value="DMC">DMC - Direction des Moyens Contribuables</option>
+          <option value="DPMC">DPMC - Direction des Petits et Micro Contribuables</option>
+          <option value="DGC">DGC - Direction des Grands contribuables</option>
+          
+        </select>
+      </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="payment_type" className="text-right">
           Payment Type

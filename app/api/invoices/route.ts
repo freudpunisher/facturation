@@ -22,6 +22,7 @@ export async function GET(request: Request) {
           name: clients.name,
           email: clients.email,
           nifClient: clients.nifClient,
+          vat_taxpayer:clients.vat_taxpayer,     
           company: clients.company
         }
       })

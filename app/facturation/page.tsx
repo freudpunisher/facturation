@@ -47,6 +47,9 @@ interface Invoice {
   taxAmount: number;
   status: "paid" | "pending" | "overdue";
   sync: boolean;
+  payment_type:number;
+  invoice_type:string;
+  invoice_currency:string;
   client: Client;
 }
 
@@ -58,6 +61,7 @@ interface Client {
   address?: string;
   email: string;
   phone: string;
+  vat_taxpayer:number
 }
 
 interface InvoiceItem {
@@ -596,7 +600,7 @@ const date = new Date(invoice.createdAt).toISOString().split('T')[0];
   return {
     invoice_number: invoice.invoiceNumber,
     invoice_date: invoiceDate,
-    invoice_type: "FN", // Normal invoice
+    invoice_type: invoice.invoice_type, // Normal invoice// Normal invoice
     tp_type: "1", // Type of taxpayer
     tp_name: "CERTRAG",
     tp_TIN: "4000003568", // Replace with actual company TIN
@@ -604,20 +608,20 @@ const date = new Date(invoice.createdAt).toISOString().split('T')[0];
     customer_TIN: invoice.client.nifClient, // Replace with actual company TIN
     customer_name: invoice.client.name,
     customer_address: invoice.client.address,
-    invoice_currency: "BIF",
+    invoice_currency: invoice.invoice_currency,
     tp_phone_number:"79764778",
     tp_address_province:"BUJUMBURA",
     tp_address_commune:"NTAHANGWA",
     tp_address_quartier:"Kigobe",
     tp_address_avenue:"Rukambara",
     tp_address_number:"28", // Replace with an appropriate value
-    vat_taxpayer:"1",
-    ct_taxpayer:"0",
-    tl_taxpayer:"0",
+    vat_taxpayer:invoice.client.vat_taxpayer,
+    ct_taxpayer:invoice.client.vat_taxpayer,
+    tl_taxpayer:invoice.client.vat_taxpayer,
     tp_fiscal_center:"DMC",
     tp_activity_sector:"construction",
     tp_legal_form:"su",
-    payment_type:"1",
+    payment_type:invoice.payment_type,
     invoice_identifier: [
       "4000003568",
       process.env.NEXT_PUBLIC_EBMS_USERNAME,

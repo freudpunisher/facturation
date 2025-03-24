@@ -50,6 +50,13 @@
       "when": 1742640891594,
       "tag": "0006_flawless_wolf_cub",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1742717854493,
+      "tag": "0007_pale_luminals",
+      "breakpoints": true
     }
   ]
 }

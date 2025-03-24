@@ -27,8 +27,9 @@ export const facturations = pgTable('facturations', {
   sync: boolean('sync').default(false),
 
   invoice_type: varchar('invoice_type', { enum: ['FN', 'FA', 'RC', 'RHF'] }).default('FN'),
-  payment_type: integer('vat_taxpayer').default(0),
+  payment_type: integer('payment_type').default(0),
   invoice_currency: varchar('invoice_currency', { enum: ['EUR', 'USD', 'BIF'] }).default('BIF'),
+  tp_fiscal_center: varchar('tp_fiscal_center', { enum: ['DGC', 'DMC', 'DPMC'] }).default('DMC'),
   // Removed issueDate and dueDate fields
   totalAmount: decimal('total_amount', { precision: 10, scale: 2 }).notNull(),
   taxAmount: decimal('tax_amount', { precision: 10, scale: 2 }).notNull(),
