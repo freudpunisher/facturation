@@ -714,10 +714,10 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
           className="col-span-3 h-10 rounded-md border border-input bg-background px-3 py-2"
           required
         >
-          <option value="FN">FN - Normal Invoice</option>
-          <option value="FA">FA - Advance Invoice</option>
-          <option value="RC">RC - Credit Note</option>
-          <option value="RHF">RHF - Non-fiscal Receipt</option>
+          <option value="FN">FN - Facture normale</option>
+          <option value="FA">FA - Facture d’Avoir</option>
+          <option value="RC">RC - Remboursement caution</option>
+          <option value="RHF">RHF - Réduction Hors Facture</option>
         </select>
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
@@ -750,12 +750,12 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
           className="col-span-3 h-10 rounded-md border border-input bg-background px-3 py-2"
           required
         >
-          <option value="0">0 - Cash</option>
-          <option value="1">1 - Check</option>
-          <option value="2">2 - Bank Card</option>
-          <option value="3">3 - Bank Transfer</option>
-          <option value="4">4 - Mobile Money</option>
-          <option value="5">5 - Other</option>
+         
+          <option value="1">1 - en espèce</option>
+          <option value="2">2 - banque</option>
+          <option value="3">3 - à crédit</option>
+          <option value="4">4 - autres</option>
+          
         </select>
       </div>
       

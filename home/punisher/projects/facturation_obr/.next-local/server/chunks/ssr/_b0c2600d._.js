@@ -4233,7 +4233,7 @@ function ClientDetailPage() {
                                                                             children: [
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                                     value: "FN",
-                                                                                    children: "FN - Normal Invoice"
+                                                                                    children: "FN - Facture normale"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/clients/[id]/page.tsx",
                                                                                     lineNumber: 717,
@@ -4241,7 +4241,7 @@ function ClientDetailPage() {
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                                     value: "FA",
-                                                                                    children: "FA - Advance Invoice"
+                                                                                    children: "FA - Facture d’Avoir"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/clients/[id]/page.tsx",
                                                                                     lineNumber: 718,
@@ -4249,7 +4249,7 @@ function ClientDetailPage() {
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                                     value: "RC",
-                                                                                    children: "RC - Credit Note"
+                                                                                    children: "RC - Remboursement caution"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/clients/[id]/page.tsx",
                                                                                     lineNumber: 719,
@@ -4257,7 +4257,7 @@ function ClientDetailPage() {
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                                     value: "RHF",
-                                                                                    children: "RHF - Non-fiscal Receipt"
+                                                                                    children: "RHF - Réduction Hors Facture"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/clients/[id]/page.tsx",
                                                                                     lineNumber: 720,
@@ -4352,16 +4352,8 @@ function ClientDetailPage() {
                                                                             required: true,
                                                                             children: [
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                                                    value: "0",
-                                                                                    children: "0 - Cash"
-                                                                                }, void 0, false, {
-                                                                                    fileName: "[project]/app/clients/[id]/page.tsx",
-                                                                                    lineNumber: 753,
-                                                                                    columnNumber: 11
-                                                                                }, this),
-                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                                     value: "1",
-                                                                                    children: "1 - Check"
+                                                                                    children: "1 - en espèce"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/clients/[id]/page.tsx",
                                                                                     lineNumber: 754,
@@ -4369,7 +4361,7 @@ function ClientDetailPage() {
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                                     value: "2",
-                                                                                    children: "2 - Bank Card"
+                                                                                    children: "2 - banque"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/clients/[id]/page.tsx",
                                                                                     lineNumber: 755,
@@ -4377,7 +4369,7 @@ function ClientDetailPage() {
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                                     value: "3",
-                                                                                    children: "3 - Bank Transfer"
+                                                                                    children: "3 - à crédit"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/clients/[id]/page.tsx",
                                                                                     lineNumber: 756,
@@ -4385,18 +4377,10 @@ function ClientDetailPage() {
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                                                                     value: "4",
-                                                                                    children: "4 - Mobile Money"
+                                                                                    children: "4 - autres"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/clients/[id]/page.tsx",
                                                                                     lineNumber: 757,
-                                                                                    columnNumber: 11
-                                                                                }, this),
-                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                                                    value: "5",
-                                                                                    children: "5 - Other"
-                                                                                }, void 0, false, {
-                                                                                    fileName: "[project]/app/clients/[id]/page.tsx",
-                                                                                    lineNumber: 758,
                                                                                     columnNumber: 11
                                                                                 }, this)
                                                                             ]
