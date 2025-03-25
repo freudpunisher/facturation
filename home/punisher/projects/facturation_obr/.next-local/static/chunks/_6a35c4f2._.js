@@ -2805,7 +2805,7 @@ function FacturationPage() {
             vat_taxpayer: invoice.client.vat_taxpayer,
             ct_taxpayer: invoice.client.vat_taxpayer,
             tl_taxpayer: invoice.client.vat_taxpayer,
-            tp_fiscal_center: "DMC",
+            tp_fiscal_center: invoice.tp_fiscal_center,
             tp_activity_sector: "construction",
             tp_legal_form: "su",
             payment_type: invoice.payment_type,
@@ -2844,12 +2844,12 @@ function FacturationPage() {
             children: "Loading invoices..."
         }, void 0, false, {
             fileName: "[project]/app/facturation/page.tsx",
-            lineNumber: 659,
+            lineNumber: 660,
             columnNumber: 33
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/facturation/page.tsx",
-        lineNumber: 659,
+        lineNumber: 660,
         columnNumber: 25
     }, this);
     if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$kokonutui$2f$layout$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2858,12 +2858,12 @@ function FacturationPage() {
             children: error
         }, void 0, false, {
             fileName: "[project]/app/facturation/page.tsx",
-            lineNumber: 660,
+            lineNumber: 661,
             columnNumber: 29
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/facturation/page.tsx",
-        lineNumber: 660,
+        lineNumber: 661,
         columnNumber: 21
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$kokonutui$2f$layout$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2878,7 +2878,7 @@ function FacturationPage() {
                             children: "Invoices"
                         }, void 0, false, {
                             fileName: "[project]/app/facturation/page.tsx",
-                            lineNumber: 666,
+                            lineNumber: 667,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2891,14 +2891,14 @@ function FacturationPage() {
                                             className: "mr-2 h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 669,
+                                            lineNumber: 670,
                                             columnNumber: 15
                                         }, this),
                                         "New Invoice"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/facturation/page.tsx",
-                                    lineNumber: 668,
+                                    lineNumber: 669,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2909,26 +2909,26 @@ function FacturationPage() {
                                             className: "h-4 w-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 673,
+                                            lineNumber: 674,
                                             columnNumber: 15
                                         }, this),
                                         "Refresh"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/facturation/page.tsx",
-                                    lineNumber: 672,
+                                    lineNumber: 673,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/facturation/page.tsx",
-                            lineNumber: 667,
+                            lineNumber: 668,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/facturation/page.tsx",
-                    lineNumber: 665,
+                    lineNumber: 666,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2942,12 +2942,12 @@ function FacturationPage() {
                                 onChange: (e)=>setSearchTerm(e.target.value)
                             }, void 0, false, {
                                 fileName: "[project]/app/facturation/page.tsx",
-                                lineNumber: 682,
+                                lineNumber: 683,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/facturation/page.tsx",
-                            lineNumber: 681,
+                            lineNumber: 682,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2963,12 +2963,12 @@ function FacturationPage() {
                                                 placeholder: "Status"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                lineNumber: 691,
+                                                lineNumber: 692,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 690,
+                                            lineNumber: 691,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2978,7 +2978,7 @@ function FacturationPage() {
                                                     children: "All Status"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 694,
+                                                    lineNumber: 695,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2986,7 +2986,7 @@ function FacturationPage() {
                                                     children: "Paid"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 695,
+                                                    lineNumber: 696,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2994,7 +2994,7 @@ function FacturationPage() {
                                                     children: "Pending"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 696,
+                                                    lineNumber: 697,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3002,19 +3002,19 @@ function FacturationPage() {
                                                     children: "Overdue"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 697,
+                                                    lineNumber: 698,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 693,
+                                            lineNumber: 694,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/facturation/page.tsx",
-                                    lineNumber: 689,
+                                    lineNumber: 690,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -3027,12 +3027,12 @@ function FacturationPage() {
                                                 placeholder: "Sync"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                lineNumber: 703,
+                                                lineNumber: 704,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 702,
+                                            lineNumber: 703,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3042,7 +3042,7 @@ function FacturationPage() {
                                                     children: "All Sync"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 706,
+                                                    lineNumber: 707,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3050,7 +3050,7 @@ function FacturationPage() {
                                                     children: "Synced"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 707,
+                                                    lineNumber: 708,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3058,19 +3058,19 @@ function FacturationPage() {
                                                     children: "Unsynced"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 708,
+                                                    lineNumber: 709,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 705,
+                                            lineNumber: 706,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/facturation/page.tsx",
-                                    lineNumber: 701,
+                                    lineNumber: 702,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$popover$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Popover"], {
@@ -3084,17 +3084,17 @@ function FacturationPage() {
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 715,
+                                                    lineNumber: 716,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                lineNumber: 714,
+                                                lineNumber: 715,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 713,
+                                            lineNumber: 714,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$popover$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PopoverContent"], {
@@ -3107,7 +3107,7 @@ function FacturationPage() {
                                                         children: "Sort By"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 720,
+                                                        lineNumber: 721,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3121,12 +3121,12 @@ function FacturationPage() {
                                                                         placeholder: "Sort by"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 724,
+                                                                        lineNumber: 725,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 723,
+                                                                    lineNumber: 724,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3136,7 +3136,7 @@ function FacturationPage() {
                                                                             children: "Date (Newest)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                                            lineNumber: 727,
+                                                                            lineNumber: 728,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3144,7 +3144,7 @@ function FacturationPage() {
                                                                             children: "Date (Oldest)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                                            lineNumber: 728,
+                                                                            lineNumber: 729,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3152,7 +3152,7 @@ function FacturationPage() {
                                                                             children: "Amount (High to Low)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                                            lineNumber: 729,
+                                                                            lineNumber: 730,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3160,7 +3160,7 @@ function FacturationPage() {
                                                                             children: "Amount (Low to High)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                                            lineNumber: 730,
+                                                                            lineNumber: 731,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3168,7 +3168,7 @@ function FacturationPage() {
                                                                             children: "Invoice# (Z-A)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                                            lineNumber: 731,
+                                                                            lineNumber: 732,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3176,24 +3176,24 @@ function FacturationPage() {
                                                                             children: "Invoice# (A-Z)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                                            lineNumber: 732,
+                                                                            lineNumber: 733,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 726,
+                                                                    lineNumber: 727,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 722,
+                                                            lineNumber: 723,
                                                             columnNumber: 21
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 721,
+                                                        lineNumber: 722,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3204,36 +3204,36 @@ function FacturationPage() {
                                                         children: "Reset Filters"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 736,
+                                                        lineNumber: 737,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                lineNumber: 719,
+                                                lineNumber: 720,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 718,
+                                            lineNumber: 719,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/facturation/page.tsx",
-                                    lineNumber: 712,
+                                    lineNumber: 713,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/facturation/page.tsx",
-                            lineNumber: 688,
+                            lineNumber: 689,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/facturation/page.tsx",
-                    lineNumber: 680,
+                    lineNumber: 681,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3247,7 +3247,7 @@ function FacturationPage() {
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/facturation/page.tsx",
-                    lineNumber: 751,
+                    lineNumber: 752,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3260,7 +3260,7 @@ function FacturationPage() {
                                 children: "No invoices match your filters"
                             }, void 0, false, {
                                 fileName: "[project]/app/facturation/page.tsx",
-                                lineNumber: 759,
+                                lineNumber: 760,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3270,13 +3270,13 @@ function FacturationPage() {
                                 children: "Clear filters"
                             }, void 0, false, {
                                 fileName: "[project]/app/facturation/page.tsx",
-                                lineNumber: 760,
+                                lineNumber: 761,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/facturation/page.tsx",
-                        lineNumber: 758,
+                        lineNumber: 759,
                         columnNumber: 13
                     }, this) : filteredInvoices.map((invoice)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "border rounded-lg shadow-sm",
@@ -3292,13 +3292,13 @@ function FacturationPage() {
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 777,
+                                                    lineNumber: 778,
                                                     columnNumber: 23
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 779,
+                                                    lineNumber: 780,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3311,7 +3311,7 @@ function FacturationPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 782,
+                                                            lineNumber: 783,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3319,13 +3319,13 @@ function FacturationPage() {
                                                             children: invoice.sync
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 783,
+                                                            lineNumber: 784,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 781,
+                                                    lineNumber: 782,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3336,7 +3336,7 @@ function FacturationPage() {
                                                             children: invoice.status.toUpperCase()
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 788,
+                                                            lineNumber: 789,
                                                             columnNumber: 23
                                                         }, this),
                                                         invoice.sync && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3344,19 +3344,19 @@ function FacturationPage() {
                                                             children: "SYNCED"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 798,
+                                                            lineNumber: 799,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 787,
+                                                    lineNumber: 788,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 772,
+                                            lineNumber: 773,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3367,7 +3367,7 @@ function FacturationPage() {
                                                     children: invoice.totalAmount
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 805,
+                                                    lineNumber: 806,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3379,12 +3379,12 @@ function FacturationPage() {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 814,
+                                                        lineNumber: 815,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 808,
+                                                    lineNumber: 809,
                                                     columnNumber: 21
                                                 }, this),
                                                 !invoice.sync && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3398,12 +3398,12 @@ function FacturationPage() {
                                                         className: `h-4 w-4 ${isUpdating === invoice.id ? 'animate-spin' : ''}`
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 825,
+                                                        lineNumber: 826,
                                                         columnNumber: 3
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 817,
+                                                    lineNumber: 818,
                                                     columnNumber: 23
                                                 }, this),
                                                 !invoice.sync && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3420,24 +3420,24 @@ function FacturationPage() {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 839,
+                                                        lineNumber: 840,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 828,
+                                                    lineNumber: 829,
                                                     columnNumber: 39
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 804,
+                                            lineNumber: 805,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/facturation/page.tsx",
-                                    lineNumber: 771,
+                                    lineNumber: 772,
                                     columnNumber: 17
                                 }, this),
                                 expandedInvoiceId === invoice.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3451,7 +3451,7 @@ function FacturationPage() {
                                                     children: "Client Details"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 847,
+                                                    lineNumber: 848,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3464,27 +3464,27 @@ function FacturationPage() {
                                                                     children: invoice.client.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 850,
+                                                                    lineNumber: 851,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                                     children: invoice.client.company
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 851,
+                                                                    lineNumber: 852,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 invoice.client.address && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                                     children: invoice.client.address
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 852,
+                                                                    lineNumber: 853,
                                                                     columnNumber: 54
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 849,
+                                                            lineNumber: 850,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3496,14 +3496,14 @@ function FacturationPage() {
                                                                             children: "Email:"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                                            lineNumber: 856,
+                                                                            lineNumber: 857,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         invoice.client.email
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 855,
+                                                                    lineNumber: 856,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3513,32 +3513,32 @@ function FacturationPage() {
                                                                             children: "Phone:"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                                            lineNumber: 860,
+                                                                            lineNumber: 861,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         invoice.client.phone
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 859,
+                                                                    lineNumber: 860,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 854,
+                                                            lineNumber: 855,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                    lineNumber: 848,
+                                                    lineNumber: 849,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 846,
+                                            lineNumber: 847,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -3546,7 +3546,7 @@ function FacturationPage() {
                                             children: "Invoice Items"
                                         }, void 0, false, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 867,
+                                            lineNumber: 868,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3562,7 +3562,7 @@ function FacturationPage() {
                                                                     children: "Description"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 872,
+                                                                    lineNumber: 873,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3570,7 +3570,7 @@ function FacturationPage() {
                                                                     children: "Quantity"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 873,
+                                                                    lineNumber: 874,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3578,7 +3578,7 @@ function FacturationPage() {
                                                                     children: "Unit Price"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 874,
+                                                                    lineNumber: 875,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3586,18 +3586,18 @@ function FacturationPage() {
                                                                     children: "Total"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/facturation/page.tsx",
-                                                                    lineNumber: 875,
+                                                                    lineNumber: 876,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 871,
+                                                            lineNumber: 872,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 870,
+                                                        lineNumber: 871,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -3609,7 +3609,7 @@ function FacturationPage() {
                                                                         children: item.description
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 882,
+                                                                        lineNumber: 883,
                                                                         columnNumber: 33
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3617,7 +3617,7 @@ function FacturationPage() {
                                                                         children: item.quantity
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 883,
+                                                                        lineNumber: 884,
                                                                         columnNumber: 33
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3625,7 +3625,7 @@ function FacturationPage() {
                                                                         children: item.unitPrice
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 884,
+                                                                        lineNumber: 885,
                                                                         columnNumber: 33
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3633,13 +3633,13 @@ function FacturationPage() {
                                                                         children: item.total !== undefined ? item.total : item.quantity * item.unitPrice
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 885,
+                                                                        lineNumber: 886,
                                                                         columnNumber: 33
                                                                     }, this)
                                                                 ]
                                                             }, item.id, true, {
                                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                                lineNumber: 881,
+                                                                lineNumber: 882,
                                                                 columnNumber: 31
                                                             }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3648,17 +3648,17 @@ function FacturationPage() {
                                                                 children: "Loading items..."
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                                lineNumber: 892,
+                                                                lineNumber: 893,
                                                                 columnNumber: 31
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/facturation/page.tsx",
-                                                            lineNumber: 891,
+                                                            lineNumber: 892,
                                                             columnNumber: 29
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 878,
+                                                        lineNumber: 879,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tfoot", {
@@ -3672,7 +3672,7 @@ function FacturationPage() {
                                                                         children: "Subtotal:"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 900,
+                                                                        lineNumber: 901,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3680,13 +3680,13 @@ function FacturationPage() {
                                                                         children: invoice.totalAmount - invoice.taxAmount
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 901,
+                                                                        lineNumber: 902,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                                lineNumber: 899,
+                                                                lineNumber: 900,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
@@ -3697,7 +3697,7 @@ function FacturationPage() {
                                                                         children: "Tax:"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 906,
+                                                                        lineNumber: 907,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3705,13 +3705,13 @@ function FacturationPage() {
                                                                         children: invoice.taxAmount
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 907,
+                                                                        lineNumber: 908,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                                lineNumber: 905,
+                                                                lineNumber: 906,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
@@ -3723,7 +3723,7 @@ function FacturationPage() {
                                                                         children: "Total:"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 910,
+                                                                        lineNumber: 911,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3731,47 +3731,47 @@ function FacturationPage() {
                                                                         children: invoice.totalAmount
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 911,
+                                                                        lineNumber: 912,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                                lineNumber: 909,
+                                                                lineNumber: 910,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                        lineNumber: 898,
+                                                        lineNumber: 899,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                lineNumber: 869,
+                                                lineNumber: 870,
                                                 columnNumber: 23
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/facturation/page.tsx",
-                                            lineNumber: 868,
+                                            lineNumber: 869,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/facturation/page.tsx",
-                                    lineNumber: 845,
+                                    lineNumber: 846,
                                     columnNumber: 19
                                 }, this)
                             ]
                         }, invoice.id, true, {
                             fileName: "[project]/app/facturation/page.tsx",
-                            lineNumber: 770,
+                            lineNumber: 771,
                             columnNumber: 15
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/app/facturation/page.tsx",
-                    lineNumber: 756,
+                    lineNumber: 757,
                     columnNumber: 9
                 }, this),
                 printingInvoice && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3782,12 +3782,12 @@ function FacturationPage() {
                         invoiceItems: invoiceItems[printingInvoice.id] || []
                     }, void 0, false, {
                         fileName: "[project]/app/facturation/page.tsx",
-                        lineNumber: 926,
+                        lineNumber: 927,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/facturation/page.tsx",
-                    lineNumber: 925,
+                    lineNumber: 926,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -3801,20 +3801,20 @@ function FacturationPage() {
                                         children: "Delete Invoice?"
                                     }, void 0, false, {
                                         fileName: "[project]/app/facturation/page.tsx",
-                                        lineNumber: 938,
+                                        lineNumber: 939,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
                                         children: "This action cannot be undone. This will permanently delete the invoice."
                                     }, void 0, false, {
                                         fileName: "[project]/app/facturation/page.tsx",
-                                        lineNumber: 939,
+                                        lineNumber: 940,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/facturation/page.tsx",
-                                lineNumber: 937,
+                                lineNumber: 938,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -3823,7 +3823,7 @@ function FacturationPage() {
                                         children: "Cancel"
                                     }, void 0, false, {
                                         fileName: "[project]/app/facturation/page.tsx",
-                                        lineNumber: 944,
+                                        lineNumber: 945,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -3832,35 +3832,35 @@ function FacturationPage() {
                                         children: "Delete"
                                     }, void 0, false, {
                                         fileName: "[project]/app/facturation/page.tsx",
-                                        lineNumber: 945,
+                                        lineNumber: 946,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/facturation/page.tsx",
-                                lineNumber: 943,
+                                lineNumber: 944,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/facturation/page.tsx",
-                        lineNumber: 936,
+                        lineNumber: 937,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/facturation/page.tsx",
-                    lineNumber: 935,
+                    lineNumber: 936,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/facturation/page.tsx",
-            lineNumber: 664,
+            lineNumber: 665,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/facturation/page.tsx",
-        lineNumber: 663,
+        lineNumber: 664,
         columnNumber: 5
     }, this);
 }
