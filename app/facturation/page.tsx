@@ -51,6 +51,7 @@ interface Invoice {
   invoice_type:string;
   invoice_currency:string;
   client: Client;
+  tp_fiscal_center:string;
 }
 
 interface Client {
@@ -618,7 +619,7 @@ const date = new Date(invoice.createdAt).toISOString().split('T')[0];
     vat_taxpayer:invoice.client.vat_taxpayer,
     ct_taxpayer:invoice.client.vat_taxpayer,
     tl_taxpayer:invoice.client.vat_taxpayer,
-    tp_fiscal_center:"DMC",
+    tp_fiscal_center:invoice.tp_fiscal_center,
     tp_activity_sector:"construction",
     tp_legal_form:"su",
     payment_type:invoice.payment_type,
