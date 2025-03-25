@@ -8,5 +8,6 @@
   "/clients/page": "app/clients/page.js",
   "/clients/[id]/page": "app/clients/[id]/page.js",
   "/api/clients/[id]/route": "app/api/clients/[id]/route.js",
-  "/facturation/page": "app/facturation/page.js"
+  "/facturation/page": "app/facturation/page.js",
+  "/tax/page": "app/tax/page.js"
 }
