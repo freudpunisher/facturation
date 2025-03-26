@@ -1,5 +1,10 @@
 {
-  "/tax/page": "app/tax/page.js",
+  "/page": "app/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/api/clients/route": "app/api/clients/route.js",
+  "/api/invoices/route": "app/api/invoices/route.js",
+  "/api/invoice-items/route": "app/api/invoice-items/route.js",
   "/api/taxes/route": "app/api/taxes/route.js",
-  "/tax/invoice/[id]/page": "app/tax/invoice/[id]/page.js"
+  "/tax/page": "app/tax/page.js",
+  "/api/taxes/[id]/route": "app/api/taxes/[id]/route.js"
 }

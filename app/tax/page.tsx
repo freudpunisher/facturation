@@ -1,10 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Eye } from "lucide-react";
+import { Eye, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -42,6 +49,7 @@ type Tax = {
   invoice_registered_date: string;
   authorityReference: string | null;
   createdAt: string;
+  status?: 'active' | 'canceled';
 };
 
 export default function TaxPage() {
@@ -58,6 +66,11 @@ export default function TaxPage() {
   const [dateFilter, setDateFilter] = useState("");
   const [referenceFilter, setReferenceFilter] = useState("");
   const [invoiceIdFilter, setInvoiceIdFilter] = useState("");
+  
+  // Cancel Modal State
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<Tax | null>(null);
+  const [cancellationReason, setCancellationReason] = useState("");
   
   useEffect(() => {
     fetchTaxes();
@@ -110,7 +123,6 @@ export default function TaxPage() {
       setLoading(false);
     }
   };
-
 
   const onView = async (invoice: Tax) => {
     try {
@@ -194,7 +206,110 @@ export default function TaxPage() {
     }
   };
 
-  
+  const onCancel = async () => {
+    if (!selectedInvoice || !cancellationReason) {
+      alert("Please provide a cancellation reason");
+      return;
+    }
+
+    try {
+      // Extract invoice sequence from invoice number
+      const [invoiceSequence] = selectedInvoice.invoice.invoiceNumber.split('/');
+      const formatEBMSDate = (dateString: string) => {
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        const d = new Date(dateString);
+        
+        // Get UTC time parts
+        const year = d.getUTCFullYear();
+        const month = pad(d.getUTCMonth() + 1); // Months are 0-based in JS
+        const day = pad(d.getUTCDate());
+        const hours = pad(d.getUTCHours());
+        const minutes = pad(d.getUTCMinutes());
+        const seconds = pad(d.getUTCSeconds());
+      
+        return `${year}${month}${day}${hours}${minutes}${seconds}`;
+      };
+      
+      // Create the invoice identifier with proper formatting
+      const invoice_identifier = [
+        process.env.NEXT_PUBLIC_EBMS_NIF,
+        process.env.NEXT_PUBLIC_EBMS_USERNAME,
+        formatEBMSDate(selectedInvoice.invoice.createdAt),
+        invoiceSequence.padStart(5, '0') // Ensure 5-digit sequence
+      ].join('/');
+      
+      // Authenticate with the EBMS API
+      const authResponse = await fetch(`${process.env.NEXT_PUBLIC_EBMS_API_URL}/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: process.env.NEXT_PUBLIC_EBMS_USERNAME,
+          password: process.env.NEXT_PUBLIC_EBMS_PASSWORD
+        })
+      });
+      
+      // Handle authentication errors
+      if (!authResponse.ok) {
+        const errorData = await authResponse.json();
+        throw new Error(`Authentication failed: ${errorData.message || 'Unknown error'}`);
+      }
+      
+      // Extract token from authentication response
+      const authData = await authResponse.json();
+      const token = authData.result.token;
+      
+      // Cancel the invoice through EBMS API
+      const cancelResponse = await fetch(`${process.env.NEXT_PUBLIC_EBMS_API_URL}/cancelInvoice/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          invoice_identifier: invoice_identifier,
+          cn_motif: cancellationReason
+        })
+      });
+      
+      // Handle cancellation response
+      if (!cancelResponse.ok) {
+        const errorData = await cancelResponse.json();
+        throw new Error(`Invoice cancellation failed: ${errorData.message || 'Unknown error'}`);
+      }
+      
+      // Update local state
+      const updatedTaxes = taxes.map(tax => 
+        tax.id === selectedInvoice.id 
+          ? { ...tax, status: 'canceled' } as Tax
+          : tax
+      );
+      setTaxes(updatedTaxes);
+      
+      // Update database via local API
+      await fetch(`/api/taxes/${selectedInvoice.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          status: 'canceled',
+          cancellationReason: cancellationReason
+        })
+      });
+      
+      // Close modal and reset state
+      setIsCancelModalOpen(false);
+      setSelectedInvoice(null);
+      setCancellationReason("");
+      
+    } catch (error) {
+      console.error("Error in onCancel function:", error);
+      alert(`Error cancelling invoice: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
   const clearFilters = () => {
     setDateFilter("");
     setReferenceFilter("");
@@ -298,116 +413,192 @@ export default function TaxPage() {
   
   return (
     <Layout>
-
-    <div className="container mx-auto py-8">
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Taxes Management</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-            <div>
-              <label className="text-sm font-medium mb-1 block">Invoice ID</label>
-              <Input
-                type="text"
-                placeholder="Filter by Invoice ID"
-                value={invoiceIdFilter}
-                onChange={(e) => setInvoiceIdFilter(e.target.value)}
-              />
+      <div className="container mx-auto py-8">
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Taxes Management</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Invoice ID</label>
+                <Input
+                  type="text"
+                  placeholder="Filter by Invoice ID"
+                  value={invoiceIdFilter}
+                  onChange={(e) => setInvoiceIdFilter(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Date</label>
+                <Input
+                  type="text"
+                  placeholder="Filter by Date"
+                  value={dateFilter}
+                  onChange={(e) => setDateFilter(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Authority Reference</label>
+                <Input
+                  type="text"
+                  placeholder="Filter by Reference"
+                  value={referenceFilter}
+                  onChange={(e) => setReferenceFilter(e.target.value)}
+                />
+              </div>
+              <div className="flex items-end">
+                <Button 
+                  variant="outline" 
+                  onClick={clearFilters}
+                  className="w-full"
+                >
+                  Clear Filters
+                </Button>
+              </div>
             </div>
-            <div>
-              <label className="text-sm font-medium mb-1 block">Date</label>
-              <Input
-                type="text"
-                placeholder="Filter by Date"
-                value={dateFilter}
-                onChange={(e) => setDateFilter(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium mb-1 block">Authority Reference</label>
-              <Input
-                type="text"
-                placeholder="Filter by Reference"
-                value={referenceFilter}
-                onChange={(e) => setReferenceFilter(e.target.value)}
-              />
-            </div>
-            <div className="flex items-end">
-              <Button 
-                variant="outline" 
-                onClick={clearFilters}
-                className="w-full"
-              >
-                Clear Filters
-              </Button>
-            </div>
-          </div>
-          
-          {loading ? (
-            <div className="flex justify-center p-8">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-            </div>
-          ) : error ? (
-            <div className="text-red-500 p-4 text-center">{error}</div>
-          ) : (
-            <>
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Invoice ID</TableHead>
-                      <TableHead>Registration Date</TableHead>
-                      <TableHead>Authority Reference</TableHead>
-                      <TableHead>Created At</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {taxes.length > 0 ? (
-                      taxes.map((tax) => (
-                        <TableRow key={tax.id}>
-                          <TableCell>{tax.id}</TableCell>
-                          <TableCell>{tax.invoice.invoiceNumber}</TableCell>
-                          <TableCell>{tax.invoice_registered_date}</TableCell>
-                          <TableCell>{tax.authorityReference || "-"}</TableCell>
-                          <TableCell>{formatDate(tax.createdAt)}</TableCell>
-                          <TableCell className="text-right">
-                            
-                              <Button variant="outline" size="sm" onClick={() => onView(tax)}>
-                                <Eye className="h-4 w-4 mr-1" />
-                                View
-                              </Button>
-                            
+            
+            {loading ? (
+              <div className="flex justify-center p-8">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+              </div>
+            ) : error ? (
+              <div className="text-red-500 p-4 text-center">{error}</div>
+            ) : (
+              <>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Invoice ID</TableHead>
+                        <TableHead>Registration Date</TableHead>
+                        <TableHead>Authority Reference</TableHead>
+                        <TableHead>Created At</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {taxes.length > 0 ? (
+                        taxes.map((tax) => (
+                          <TableRow key={tax.id}>
+                            <TableCell>{tax.id}</TableCell>
+                            <TableCell>{tax.invoice.invoiceNumber}</TableCell>
+                            <TableCell>{tax.invoice_registered_date}</TableCell>
+                            <TableCell>{tax.authorityReference || "-"}</TableCell>
+                            <TableCell>{formatDate(tax.createdAt)}</TableCell>
+                            <TableCell>
+                              <span className={`
+                                px-2 py-1 rounded text-xs font-medium
+                                ${tax.status === 'canceled' 
+                                  ? 'bg-red-100 text-red-800' 
+                                  : 'bg-green-100 text-green-800'}
+                              `}>
+                                {tax.status }
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => onView(tax)}
+                                >
+                                  <Eye className="h-4 w-4 mr-1" />
+                                  View
+                                </Button>
+                                {tax.status !== 'canceled' && (
+                                  <Button 
+                                    variant="destructive" 
+                                    size="sm" 
+                                    onClick={() => {
+                                      setSelectedInvoice(tax);
+                                      setIsCancelModalOpen(true);
+                                    }}
+                                  >
+                                    <X className="h-4 w-4 mr-1" />
+                                    Cancel
+                                  </Button>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={7} className="text-center py-8">
+                            No taxes found
                           </TableCell>
                         </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={6} className="text-center py-8">
-                          No taxes found
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-              
-              {taxes.length > 0 && (
-                <div className="mt-4">
-                  <Pagination>
-                    <PaginationContent>
-                      {generatePaginationLinks()}
-                    </PaginationContent>
-                  </Pagination>
+                      )}
+                    </TableBody>
+                  </Table>
                 </div>
-              )}
-            </>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+                
+                {taxes.length > 0 && (
+                  <div className="mt-4">
+                    <Pagination>
+                      <PaginationContent>
+                        {generatePaginationLinks()}
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Cancel Invoice Modal */}
+        <Dialog 
+          open={isCancelModalOpen} 
+          onOpenChange={() => {
+            setIsCancelModalOpen(false);
+            setSelectedInvoice(null);
+            setCancellationReason("");
+          }}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Cancel Invoice</DialogTitle>
+              <DialogDescription>
+                Please provide a reason for cancelling this invoice
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+              <label htmlFor="cancellation-reason" className="block mb-2 text-sm font-medium">
+                Cancellation Reason
+              </label>
+              <Input 
+                id="cancellation-reason"
+                placeholder="Enter cancellation reason"
+                value={cancellationReason}
+                onChange={(e) => setCancellationReason(e.target.value)}
+              />
+            </div>
+            <DialogFooter>
+              <Button 
+                variant="outline"
+                onClick={() => {
+                  setIsCancelModalOpen(false);
+                  setSelectedInvoice(null);
+                  setCancellationReason("");
+                }}
+              >
+                Cancel
+              </Button>
+              <Button 
+                variant="destructive"
+                onClick={onCancel}
+                disabled={!cancellationReason}
+              >
+                Confirm Cancel
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     </Layout>
   );
 }

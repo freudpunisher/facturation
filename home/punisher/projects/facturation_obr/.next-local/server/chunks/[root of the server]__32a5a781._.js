@@ -1,6 +1,6 @@
 module.exports = {
 
-"[project]/.next-internal/server/app/api/taxes/route/actions.js [app-rsc] (server actions loader, ecmascript)": (function(__turbopack_context__) {
+"[project]/.next-internal/server/app/api/taxes/[id]/route/actions.js [app-rsc] (server actions loader, ecmascript)": (function(__turbopack_context__) {
 
 var { g: global, d: __dirname, m: module, e: exports } = __turbopack_context__;
 {
@@ -296,15 +296,12 @@ const db = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$d
     schema: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__
 });
 }}),
-"[project]/app/api/taxes/route.ts [app-route] (ecmascript)": ((__turbopack_context__) => {
+"[project]/app/api/taxes/[id]/route.ts [app-route] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, d: __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "DELETE": (()=>DELETE),
-    "GET": (()=>GET),
-    "POST": (()=>POST),
     "PUT": (()=>PUT)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
@@ -315,101 +312,39 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$o
 ;
 ;
 ;
-async function GET() {
-    try {
-        const allTaxes = await __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$index$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["db"].select({
-            id: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].id,
-            invoice: {
-                id: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["facturations"].id,
-                invoiceNumber: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["facturations"].invoiceNumber,
-                createdAt: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["facturations"].createdAt
-            },
-            invoice_registered_date: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].invoice_registered_date,
-            authorityReference: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].authorityReference,
-            createdAt: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].createdAt,
-            status: __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].status
-        }).from(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"]).innerJoin(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["facturations"], (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$sql$2f$expressions$2f$conditions$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["eq"])(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].invoiceId, __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["facturations"].id));
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(allTaxes);
-    } catch (error) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Failed to fetch taxes"
-        }, {
-            status: 500
-        });
-    }
-}
-async function POST(request) {
-    try {
-        const body = await request.json();
-        const { invoiceId, invoice_registered_date, authorityReference } = body;
-        // Validate required fields
-        if (!invoiceId || !invoice_registered_date) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: "Missing required fields: invoiceId and invoice_registered_date are required"
-            }, {
-                status: 400
-            });
-        }
-        // Parse and validate the date
-        let parsedDate;
-        try {
-        // Try parsing the date as an ISO string (e.g., "2023-10-01T00:00:00.000Z")
-        // parsedDate = new Date(invoice_registered_date);
-        // Check if the date is valid
-        // if (isNaN(invoice_registered_date.getTime())) {
-        //   throw new Error("Invalid date format");
-        // }
-        } catch (error) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: "Invalid date format for invoice_registered_date. Please provide a valid date."
-            }, {
-                status: 400
-            });
-        }
-        // Insert the new tax record
-        const newTax = await __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$index$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["db"].insert(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"]).values({
-            invoiceId: parseInt(invoiceId),
-            invoice_registered_date,
-            authorityReference: authorityReference || null
-        }).returning();
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(newTax[0]);
-    } catch (error) {
-        console.error("Error creating tax:", error);
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Failed to create tax"
-        }, {
-            status: 500
-        });
-    }
-}
 async function PUT(request, { params }) {
-    try {
-        const id = parseInt(params.id);
-        const body = await request.json();
-        const { invoice_registered_date, authorityReference } = body;
-        const updatedTax = await __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$index$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["db"].update(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"]).set({
-            invoice_registered_date,
-            authorityReference: authorityReference || null
-        }).where((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$sql$2f$expressions$2f$conditions$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["eq"])(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].id, id)).returning();
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(updatedTax[0]);
-    } catch (error) {
+    const id = parseInt(params.id);
+    if (isNaN(id)) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Failed to update tax"
+            error: 'Invalid invoice ID'
         }, {
-            status: 500
+            status: 400
         });
     }
-}
-async function DELETE(request, { params }) {
     try {
-        const id = parseInt(params.id);
-        await __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$index$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["db"].delete(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"]).where((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$sql$2f$expressions$2f$conditions$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["eq"])(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].id, id));
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            message: "Tax deleted successfully"
-        });
+        const body = await request.json() // Parse the request body
+        ;
+        if (!body || Object.keys(body).length === 0) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'No update data provided'
+            }, {
+                status: 400
+            });
+        }
+        const updatedTaxes = await __TURBOPACK__imported__module__$5b$project$5d2f$db$2f$index$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["db"].update(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"]).set(body) // Use the parsed request body as update data
+        .where((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$drizzle$2d$orm$2f$sql$2f$expressions$2f$conditions$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["eq"])(__TURBOPACK__imported__module__$5b$project$5d2f$db$2f$schema$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["taxes"].id, id)).returning();
+        if (updatedTaxes.length === 0) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'Taxe not found or no changes applied'
+            }, {
+                status: 404
+            });
+        }
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(updatedTaxes[0]);
     } catch (error) {
+        console.error('Update Error:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Failed to delete tax"
+            error: 'Failed to update Taxe'
         }, {
             status: 500
         });
@@ -419,4 +354,4 @@ async function DELETE(request, { params }) {
 
 };
 
-//# sourceMappingURL=%5Broot%20of%20the%20server%5D__08875d5c._.js.map
+//# sourceMappingURL=%5Broot%20of%20the%20server%5D__32a5a781._.js.map

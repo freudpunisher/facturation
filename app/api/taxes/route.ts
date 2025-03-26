@@ -18,6 +18,7 @@ export async function GET() {
         invoice_registered_date: taxes.invoice_registered_date,
         authorityReference: taxes.authorityReference,
         createdAt: taxes.createdAt, 
+        status: taxes.status,
     }).from(taxes)
     .innerJoin(facturations, eq(taxes.invoiceId, facturations.id));
     return NextResponse.json(allTaxes);
