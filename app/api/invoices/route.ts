@@ -18,6 +18,10 @@ export async function GET(request: Request) {
         status: facturations.status,
         sync: facturations.sync,
         createdAt: facturations.createdAt,
+        payment_type: facturations.payment_type,
+        tp_fiscal_center: facturations.tp_fiscal_center,
+        invoice_type: facturations.invoice_type,
+        invoice_currency: facturations.invoice_currency,
         client: {
           name: clients.name,
           email: clients.email,

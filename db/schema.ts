@@ -27,7 +27,7 @@ export const facturations = pgTable('facturations', {
   sync: boolean('sync').default(false),
 
   invoice_type: varchar('invoice_type', { enum: ['FN', 'FA', 'RC', 'RHF'] }).default('FN'),
-  payment_type: integer('payment_type').default(0),
+  payment_type: integer('payment_type').default(1),
   invoice_currency: varchar('invoice_currency', { enum: ['EUR', 'USD', 'BIF'] }).default('BIF'),
   tp_fiscal_center: varchar('tp_fiscal_center', { enum: ['DGC', 'DMC', 'DPMC'] }).default('DMC'),
   // Removed issueDate and dueDate fields
@@ -53,9 +53,15 @@ export const detailFacturations = pgTable('detail_facturations', {
 export const taxes = pgTable('taxes', {
   id: serial('id').primaryKey(),
   invoiceId: integer('invoice_id').references(() => facturations.id).notNull(),
-  invoice_registered_date:  varchar('invoice_registered_date', { length: 255 }).notNull(),
+  invoice_registered_date: varchar('invoice_registered_date', { length: 255 }).notNull(),
   authorityReference: varchar('authority_reference', { length: 255 }),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  status: varchar('status', { 
+    length: 20, 
+    enum: ['active', 'canceled'] 
+  }).default('active').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(), 
+  cancellationReason: varchar('cancellation_reason', { length: 255 }),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 // Relations
@@ -85,3 +91,9 @@ export const taxRelations = relations(taxes, ({ one }) => ({
     references: [facturations.id]
   }),
 }));
+
+export type Client = typeof clients.$inferSelect;
+export type Invoice = typeof facturations.$inferSelect;
+export type Tax = typeof taxes.$inferSelect;
+export type InvoiceDetail = typeof detailFacturations.$inferSelect;
+export type NewTax = typeof taxes.$inferInsert;

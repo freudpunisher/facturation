@@ -1,5 +1,17 @@
 {
-  "node": {},
+  "node": {
+    "70e6e92032e6050134a021a5d096602bf08ed22866": {
+      "workers": {
+        "app/tax/invoice/[id]/page": {
+          "moduleId": "[project]/.next-internal/server/app/tax/invoice/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/lib/actions/invoice-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/tax/invoice/[id]/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
   "encryptionKey": "fAZMeAn0HguA7ykfsk/Vu5O6ed+uit7KAPFboAhnXYw="
 }

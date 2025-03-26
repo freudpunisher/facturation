@@ -3255,7 +3255,7 @@ function ClientDetailPage() {
         taxAmount: "0",
         status: "pending",
         invoice_type: 'FN',
-        payment_type: 0,
+        payment_type: '1',
         invoice_currency: 'BIF',
         tp_fiscal_center: 'DMC'
     });

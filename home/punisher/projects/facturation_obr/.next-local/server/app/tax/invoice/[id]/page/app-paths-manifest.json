@@ -1,0 +1,3 @@
+{
+  "/tax/invoice/[id]/page": "app/tax/invoice/[id]/page.js"
+}

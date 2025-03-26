@@ -3485,7 +3485,7 @@ function ClientDetailPage() {
         taxAmount: "0",
         status: "pending",
         invoice_type: 'FN',
-        payment_type: 0,
+        payment_type: '1',
         invoice_currency: 'BIF',
         tp_fiscal_center: 'DMC'
     });
@@ -5566,7 +5566,7 @@ function ClientDetailPage() {
         columnNumber: 5
     }, this);
 }
-_s(ClientDetailPage, "aHLcHChMA/9L4mM2N9tkz1V4Cy4=", false, function() {
+_s(ClientDetailPage, "JIU0RQJt29bkb9VWs3JYxrYCj8c=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],

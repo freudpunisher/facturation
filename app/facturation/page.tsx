@@ -564,7 +564,7 @@ const {toast} = useToast();
 const transformToEBMSFormat = (invoice: Invoice, items: InvoiceItem[]) => {
   // Ensure we have the invoice items
   // const items = invoiceItems[invoice.id] || [];
-  console.log("Invoice Items for Transformation:", items); // Log the items
+  console.log("Invoice Items for Transformation:", invoice); // Log the items
 
   // Format date to YYYYMMDDHHMMSS
   const formatEBMSDate = (dateString: string) => {
@@ -900,16 +900,18 @@ const calculateItemTax = (item: InvoiceItem, tax: any) => {
                           <tr className="border-t">
                             <td colSpan={3} className="px-4 py-2 text-right font-medium">Subtotal:</td>
                             <td className="px-4 py-2 text-right font-medium">
-                              {(invoice.totalAmount - invoice.taxAmount)}
+                              {(invoice.totalAmount )}
                             </td>
                           </tr>
                           <tr>
-                            <td colSpan={3} className="px-4 py-2 text-right font-medium">Tax:</td>
-                            <td className="px-4 py-2 text-right">{invoice.taxAmount}</td>
+                            <td colSpan={3} className="px-4 py-2 text-right font-medium">Tax({invoice.taxAmount * 100}%):</td>
+                            <td className="px-4 py-2 text-right font-bold">
+  {(Number(invoice.totalAmount) * invoice.taxAmount ) }
+</td>
                           </tr>
                           <tr className="border-t">
                             <td colSpan={3} className="px-4 py-2 text-right font-medium">Total:</td>
-                            <td className="px-4 py-2 text-right font-bold">{invoice.totalAmount}</td>
+                            <td className="px-4 py-2 text-right font-bold">{(Number(invoice.totalAmount) * invoice.taxAmount) + Number(invoice.totalAmount)  }</td>
                           </tr>
                         </tfoot>
                       </table>

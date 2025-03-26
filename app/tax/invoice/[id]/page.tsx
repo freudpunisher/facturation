@@ -14,6 +14,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Layout from "@/components/kokonutui/layout";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/toaster"
+import { updateInvoiceStatus } from "@/lib/actions/invoice-actions";
+import axios from "axios";
 
 // Define types for the API response
 type InvoiceItem = {
@@ -79,7 +92,11 @@ export default function InvoiceDetailPage() {
   const [invoiceData, setInvoiceData] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [cancellationReason, setCancellationReason] = useState("");
+  const [isSubmittingCancellation, setIsSubmittingCancellation] = useState(false);
+  const {toast} = useToast();
+  
   // In a real implementation, you would get this data from a route parameter or state
   // For this example, we'll simulate retrieving the data from localStorage
   useEffect(() => {
@@ -119,6 +136,82 @@ export default function InvoiceDetailPage() {
     );
   };
 
+  const handleCancelInvoice = async () => {
+    if (!invoiceData) return;
+  
+    try {
+      setIsSubmittingCancellation(true);
+  
+      // Get authentication token
+      const loginResponse = await axios.post(
+        "https://ebms.obr.gov.bi:9443/ebms_api/login/",
+        {
+          username: "ws400000356800463",
+          password: "^1E6Emt/",
+        }
+      );
+  
+      if (!loginResponse.data.success) {
+        throw new Error("Failed to obtain authentication token");
+      }
+  
+      const token = loginResponse.data.result.token;
+  
+      // Cancel the invoice in EBMS system
+      const cancelResponse = await axios.post(
+        "https://ebms.obr.gov.bi:9443/ebms_api/cancelInvoice/",
+        {
+          invoice_identifier: invoiceData.invoice_identifier,
+          cn_motif: cancellationReason,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      if (cancelResponse.data.success) {
+        // Update local database
+        const updateResult = await updateInvoiceStatus(
+          invoiceData.invoice_identifier, 
+          'canceled', 
+          cancellationReason
+        );
+  
+        if (!updateResult.success) {
+          throw new Error(updateResult.message);
+        }
+  
+        // Update local state
+        setInvoiceData(prev => prev ? { 
+          ...prev, 
+          status: 'canceled',
+          cancellationReason 
+        } : null);
+  
+        toast({
+          title: "Invoice Cancelled",
+          description: "The invoice has been successfully cancelled.",
+        });
+        
+        setIsCancelModalOpen(false);
+      } else {
+        throw new Error(cancelResponse.data.msg || "Failed to cancel invoice");
+      }
+    } catch (error) {
+      console.error("Invoice cancellation error:", error);
+      toast({
+        title: "Cancellation Failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmittingCancellation(false);
+    }
+  };
+
   const { total, vatTotal } = calculateTotals();
 
   // Format currency
@@ -145,15 +238,36 @@ export default function InvoiceDetailPage() {
   return (
     <Layout>
       <div className="container mx-auto py-8">
-        <Button
+      {invoiceData && (
+          <div className="flex justify-between items-center mb-6">
+            <Button
+              variant="outline"
+              onClick={() => router.back()}
+              className="mr-4"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Taxes
+            </Button>
+            
+            {invoiceData.invoice_type !== 'Cancelled' && (
+              <Button 
+                variant="destructive" 
+                onClick={() => setIsCancelModalOpen(true)}
+              >
+                Cancel Invoice
+              </Button>
+            )}
+          </div>
+        )}
+        {/* <Button
           variant="outline"
           onClick={() => router.back()}
           className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Taxes
-        </Button>
-
+        </Button> */}
+        
         {loading ? (
           <div className="flex justify-center p-8">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
@@ -309,7 +423,54 @@ export default function InvoiceDetailPage() {
         ) : (
           <div className="text-center py-8">Invoice data not found</div>
         )}
+
+<Dialog 
+          open={isCancelModalOpen} 
+          onOpenChange={setIsCancelModalOpen}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Cancel Invoice</DialogTitle>
+              <DialogDescription>
+                Provide a reason for cancelling this invoice
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="cancellation-reason" className="text-right">
+                  Reason
+                </Label>
+                <Input
+                  id="cancellation-reason"
+                  value={cancellationReason}
+                  onChange={(e) => setCancellationReason(e.target.value)}
+                  className="col-span-3"
+                  placeholder="Enter cancellation reason"
+                />
+              </div>
+            </div>
+            
+            <DialogFooter>
+              <Button 
+                type="button" 
+                variant="outline"
+                onClick={() => setIsCancelModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button 
+                type="submit" 
+                onClick={handleCancelInvoice}
+                disabled={!cancellationReason || isSubmittingCancellation}
+              >
+                {isSubmittingCancellation ? "Cancelling..." : "Confirm Cancel"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
+      
     </Layout>
   );
 }

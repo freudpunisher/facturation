@@ -104,7 +104,7 @@ const [printingInvoiceItems, setPrintingInvoiceItems] = useState<InvoiceDetail[]
     taxAmount: "0", // Start with 0
     status: "pending" as "paid" | "pending" | "overdue",
     invoice_type: 'FN',
-    payment_type: 0,
+    payment_type: '1',
     invoice_currency: 'BIF',
     tp_fiscal_center:'DMC'
   });

@@ -2565,7 +2565,7 @@ function FacturationPage() {
     const transformToEBMSFormat = (invoice, items)=>{
         // Ensure we have the invoice items
         // const items = invoiceItems[invoice.id] || [];
-        console.log("Invoice Items for Transformation:", items); // Log the items
+        console.log("Invoice Items for Transformation:", invoice); // Log the items
         // Format date to YYYYMMDDHHMMSS
         const formatEBMSDate = (dateString)=>{
             const pad = (n)=>n.toString().padStart(2, '0');
@@ -3482,7 +3482,7 @@ function FacturationPage() {
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                                         className: "px-4 py-2 text-right font-medium",
-                                                                        children: invoice.totalAmount - invoice.taxAmount
+                                                                        children: invoice.totalAmount
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
                                                                         lineNumber: 902,
@@ -3499,15 +3499,19 @@ function FacturationPage() {
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                                         colSpan: 3,
                                                                         className: "px-4 py-2 text-right font-medium",
-                                                                        children: "Tax:"
-                                                                    }, void 0, false, {
+                                                                        children: [
+                                                                            "Tax(",
+                                                                            invoice.taxAmount * 100,
+                                                                            "%):"
+                                                                        ]
+                                                                    }, void 0, true, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
                                                                         lineNumber: 907,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                                        className: "px-4 py-2 text-right",
-                                                                        children: invoice.taxAmount
+                                                                        className: "px-4 py-2 text-right font-bold",
+                                                                        children: Number(invoice.totalAmount) * invoice.taxAmount
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
                                                                         lineNumber: 908,
@@ -3528,21 +3532,21 @@ function FacturationPage() {
                                                                         children: "Total:"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 911,
+                                                                        lineNumber: 913,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                                         className: "px-4 py-2 text-right font-bold",
-                                                                        children: invoice.totalAmount
+                                                                        children: Number(invoice.totalAmount) * invoice.taxAmount + Number(invoice.totalAmount)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/facturation/page.tsx",
-                                                                        lineNumber: 912,
+                                                                        lineNumber: 914,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/facturation/page.tsx",
-                                                                lineNumber: 910,
+                                                                lineNumber: 912,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
@@ -3587,12 +3591,12 @@ function FacturationPage() {
                         invoiceItems: invoiceItems[printingInvoice.id] || []
                     }, void 0, false, {
                         fileName: "[project]/app/facturation/page.tsx",
-                        lineNumber: 927,
+                        lineNumber: 929,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/facturation/page.tsx",
-                    lineNumber: 926,
+                    lineNumber: 928,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -3606,20 +3610,20 @@ function FacturationPage() {
                                         children: "Delete Invoice?"
                                     }, void 0, false, {
                                         fileName: "[project]/app/facturation/page.tsx",
-                                        lineNumber: 939,
+                                        lineNumber: 941,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
                                         children: "This action cannot be undone. This will permanently delete the invoice."
                                     }, void 0, false, {
                                         fileName: "[project]/app/facturation/page.tsx",
-                                        lineNumber: 940,
+                                        lineNumber: 942,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/facturation/page.tsx",
-                                lineNumber: 938,
+                                lineNumber: 940,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -3628,7 +3632,7 @@ function FacturationPage() {
                                         children: "Cancel"
                                     }, void 0, false, {
                                         fileName: "[project]/app/facturation/page.tsx",
-                                        lineNumber: 945,
+                                        lineNumber: 947,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -3637,24 +3641,24 @@ function FacturationPage() {
                                         children: "Delete"
                                     }, void 0, false, {
                                         fileName: "[project]/app/facturation/page.tsx",
-                                        lineNumber: 946,
+                                        lineNumber: 948,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/facturation/page.tsx",
-                                lineNumber: 944,
+                                lineNumber: 946,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/facturation/page.tsx",
-                        lineNumber: 937,
+                        lineNumber: 939,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/facturation/page.tsx",
-                    lineNumber: 936,
+                    lineNumber: 938,
                     columnNumber: 9
                 }, this)
             ]
